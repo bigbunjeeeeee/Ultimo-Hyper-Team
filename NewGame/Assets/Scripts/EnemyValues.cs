@@ -9,6 +9,7 @@ public class EnemyValues : MonoBehaviour
     public float maxHealth;
     public float damage;
     public float aoe;
+    public float cost;
     float timer;
     public float attackspeed;
 
