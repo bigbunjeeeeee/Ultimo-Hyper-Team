@@ -18,11 +18,13 @@ public class Player_Control : MonoBehaviour
     {
         Vector2 worldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         transform.position = worldPos;
-
-        if (Input.GetMouseButton(0))
+        if (worldPos.x <= -1 && worldPos.y <= 5 && worldPos.y >= -5)
         {
-            Instantiate(prefab, transform.position, transform.rotation);
-            Destroy(gameObject);
+            if (Input.GetMouseButton(0))
+            {
+                Instantiate(prefab, transform.position, transform.rotation);
+                Destroy(gameObject);
+            }
         }
     }
 }
