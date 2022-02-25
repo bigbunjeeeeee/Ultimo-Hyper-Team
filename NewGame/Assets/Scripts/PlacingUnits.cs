@@ -36,16 +36,14 @@ public class PlacingUnits : MonoBehaviour
             }
             else
             {
-                print("destroy dude");
-                //Destroy(hit.collider.gameObject);
-                //Destroy(heldUnit);
+                Destroy(heldUnit);
             }
         }
         else
         {
-            print("destroy dude hit nothing");
             Destroy(heldUnit);
         }
+
         isHolding = false;
         heldUnit = null;
     }
