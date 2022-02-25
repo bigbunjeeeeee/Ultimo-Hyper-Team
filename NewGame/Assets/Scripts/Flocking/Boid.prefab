@@ -102,7 +102,11 @@ MonoBehaviour:
   AlignmentWeight: 1.05
   PositionWeight: 0.87
   SeparationWeight: 3.04
+  targetWeight: 0
+  targetAvoidWeight: 0
   ObstableWeight: {x: 0, y: 0}
+  followingTarget: 1
+  avoidingTarget: 1
   xMin: -9
   xMax: 9
   yMin: -4.6
