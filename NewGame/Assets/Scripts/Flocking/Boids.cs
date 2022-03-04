@@ -4,26 +4,16 @@ using UnityEngine;
 
 public class Boids : MonoBehaviour
 {
-    Boids[] boids;
+    public Flock flock;
 
-    Target[] targets;
-
+    public GameObject Target;
     TargetAvoid[] targetsAvoid;
 
     Vector2 velocity;
-
-    public float range = 3.0f;
-
-    public float AvoidRange = 0.1f;
-
     public float speed = 0.009f;
 
-    Vector2 Alignment;
-    Vector2 Position;
-    Vector2 Separation;
-    Vector2 ObstacleAvoidance;
-    Vector2 targetFollow;
-    Vector2 targetAvoid;
+    public float range = 3.0f;
+    public float AvoidRange = 0.1f;
 
     public float AlignmentWeight;
     public float PositionWeight;
@@ -33,51 +23,75 @@ public class Boids : MonoBehaviour
     public Vector2 ObstableWeight;
 
     public bool followingTarget;
-
     public bool avoidingTarget;
 
     public float xMin, xMax, yMin, yMax;
 
-    // Start is called before the first frame update
     void Start()
     {
         velocity = new Vector2(Random.Range(-1.0f, 1.0f), Random.Range(-1.0f, 1.0f));
         velocity = velocity.normalized;
-        boids = FindObjectsOfType<Boids>();
-        targets = FindObjectsOfType<Target>();
+
+        if (Target == null)
+        {
+            followingTarget = false;
+        }
+
         targetsAvoid = FindObjectsOfType<TargetAvoid>();
+        if (targetsAvoid.Length == 0)
+        {
+            avoidingTarget = false;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    List<Boids> closeBoids()
     {
         List<Boids> CloseBoids = new List<Boids>();
-        Alignment = new Vector2(0.0f, 0.0f);
-        Separation = new Vector2(0.0f, 0.0f);
-        Position = new Vector2(0.0f, 0.0f);
-        ObstacleAvoidance = new Vector2(0.0f, 0.0f);
-        for (int i = 0; i < boids.Length; i++)
+        for (int i = 0; i < flock.boids.Count; i++)
         {
-            if (boids[i].gameObject != gameObject)
+            if (flock.boids[i].gameObject != gameObject)
             {
-                if (Vector3.Distance(boids[i].transform.position, transform.position) < range)
+                if (Vector3.Distance(flock.boids[i].transform.position, transform.position) < range)
                 {
-                    Alignment += boids[i].velocity;
-                    CloseBoids.Add(boids[i]);
+                    CloseBoids.Add(flock.boids[i]);
                 }
             }
         }
+        return CloseBoids;
+    }
 
-        int temp = 0;
-        foreach (Boids b in CloseBoids)
+    Vector2 getAlignment(List<Boids> closeBoids)
+    {
+        Vector2 Alignment = new Vector2(0.0f, 0.0f);
+        foreach (Boids b in closeBoids)
         {
             if (b.gameObject != gameObject)
             {
-                Position += new Vector2(b.transform.position.x, b.transform.position.y);
+                Alignment += b.velocity;
+            }
+        }
+
+        if (closeBoids.Count > 0)
+        {
+            Alignment = (Alignment / closeBoids.Count);
+            Alignment.Normalize();
+        }
+        return Alignment;
+    }
+
+    Vector2 getSeparation(List<Boids> closeBoids)
+    {
+        Vector2 Separation = new Vector2(0.0f, 0.0f);
+        int temp = 0;
+
+        foreach (Boids b in closeBoids)
+        {
+            if (b.gameObject != gameObject)
+            {
                 if (Vector3.Distance(b.transform.position, transform.position) < AvoidRange)
                 {
                     temp++;
-                    Separation +=  new Vector2(b.transform.position.x, b.transform.position.y);
+                    Separation += new Vector2(b.transform.position.x, b.transform.position.y);
                 }
             }
         }
@@ -86,61 +100,93 @@ public class Boids : MonoBehaviour
         {
             Separation = new Vector2(transform.position.x, transform.position.y) - (Separation / temp);
             Separation.Normalize();
-            //Debug.DrawLine(transform.position, new Vector3(transform.position.x + Separation.x, transform.position.y + Separation.y, 0.0f), Color.green);
+        }
+        return Separation;
+    }
+
+    Vector2 getPosition(List<Boids> closeBoids)
+    {
+        Vector2 Position = new Vector2(0.0f, 0.0f);
+
+        foreach (Boids b in closeBoids)
+        {
+            if (b.gameObject != gameObject)
+            {
+                Position += new Vector2(b.transform.position.x, b.transform.position.y);
+            }
         }
 
-        if (CloseBoids.Count > 0)
+        if (closeBoids.Count > 0)
         {
-            Position = (Position / CloseBoids.Count) - new Vector2(transform.position.x, transform.position.y);
+            Position = (Position / closeBoids.Count) - new Vector2(transform.position.x, transform.position.y);
             Position.Normalize();
-            //Debug.DrawLine(transform.position, new Vector3(transform.position.x + Position.x, transform.position.y + Position.y, 0.0f), Color.blue);
         }
+        return Position;
+    }
 
-        if (CloseBoids.Count > 0)
-        {
-            Alignment = (Alignment / CloseBoids.Count);
-            Alignment.Normalize();
-            //Debug.DrawLine(transform.position, new Vector3(transform.position.x + Alignment.x, transform.position.y + Alignment.y, 0.0f), Color.red);
-        }
-
-        ObstacleAvoidance = new Vector2(0.0f, 0.0f);
-
-        if (transform.position.x < xMin + AvoidRange)
-        {
-            ObstableWeight.x = Mathf.Abs(transform.position.x - (xMin + AvoidRange)) / AvoidRange;
-            ObstacleAvoidance.x = 1.0f;
-        }
-        else if (transform.position.x > xMax - AvoidRange)
-        {
-            ObstableWeight.x = Mathf.Abs(transform.position.x - (xMax - AvoidRange)) / AvoidRange;
-            ObstacleAvoidance.x = -1.0f;
-        }
-
-        if (transform.position.y < yMin + AvoidRange)
-        {
-            ObstableWeight.y = Mathf.Abs(transform.position.y - (yMin + AvoidRange)) / AvoidRange;
-            ObstacleAvoidance.y = 1.0f;
-        }
-        else if (transform.position.y > yMax - AvoidRange)
-        {
-            ObstableWeight.y = Mathf.Abs(transform.position.y - (yMax - AvoidRange)) / AvoidRange;
-            ObstacleAvoidance.y = -1.0f;
-        }
-
-        int closestTargetIndex = 0;
-        float closestTargetDistance = 100000.0f;
+    Vector2 getObstacleAvoidance()
+    {
+        Vector2 ObstacleAvoidance = new Vector2(0.0f, 0.0f);
         if (followingTarget)
         {
-            for (int i = 0; i < targets.Length; i++)
+            if ((transform.position.x - Target.transform.position.x) < xMin + AvoidRange)
             {
-                if (closestTargetDistance > Vector3.Distance(targets[i].transform.position, transform.position))
-                {
-                    closestTargetIndex = i;
-                    closestTargetDistance = Vector3.Distance(targets[i].transform.position, transform.position);
-                }
+                ObstableWeight.x = Mathf.Abs((transform.position.x - Target.transform.position.x) - (xMin + AvoidRange)) / AvoidRange;
+                ObstacleAvoidance.x = 1.0f;
+            }
+            else if ((transform.position.x - Target.transform.position.x) > xMax - AvoidRange)
+            {
+                ObstableWeight.x = Mathf.Abs((transform.position.x - Target.transform.position.x) - (xMax - AvoidRange)) / AvoidRange;
+                ObstacleAvoidance.x = -1.0f;
             }
 
-            targetFollow = targets[closestTargetIndex].transform.position - transform.position;
+            if ((transform.position.y - Target.transform.position.y) < yMin + AvoidRange)
+            {
+                ObstableWeight.y = Mathf.Abs((transform.position.y - Target.transform.position.y) - (yMin + AvoidRange)) / AvoidRange;
+                ObstacleAvoidance.y = 1.0f;
+            }
+            else if ((transform.position.y - Target.transform.position.y) > yMax - AvoidRange)
+            {
+                ObstableWeight.y = Mathf.Abs((transform.position.y - Target.transform.position.y) - (yMax - AvoidRange)) / AvoidRange;
+                ObstacleAvoidance.y = -1.0f;
+            }
+        }
+        else
+        {
+            if (transform.position.x < xMin + AvoidRange)
+            {
+                ObstableWeight.x = Mathf.Abs(transform.position.x - (xMin + AvoidRange)) / AvoidRange;
+                ObstacleAvoidance.x = 1.0f;
+            }
+            else if (transform.position.x > xMax - AvoidRange)
+            {
+                ObstableWeight.x = Mathf.Abs(transform.position.x- (xMax - AvoidRange)) / AvoidRange;
+                ObstacleAvoidance.x = -1.0f;
+            }
+
+            if (transform.position.y < yMin + AvoidRange)
+            {
+                ObstableWeight.y = Mathf.Abs(transform.position.y- (yMin + AvoidRange)) / AvoidRange;
+                ObstacleAvoidance.y = 1.0f;
+            }
+            else if (transform.position.y > yMax - AvoidRange)
+            {
+                ObstableWeight.y = Mathf.Abs(transform.position.y- (yMax - AvoidRange)) / AvoidRange;
+                ObstacleAvoidance.y = -1.0f;
+            }
+        }
+        
+        return ObstacleAvoidance;
+    }
+
+    Vector2 getFollowingTarget()
+    {
+        Vector2 targetFollow = new Vector2(0.0f, 0.0f);
+
+        if (followingTarget)
+        {
+            float closestTargetDistance = Vector3.Distance(Target.transform.position, transform.position);
+            targetFollow = Target.transform.position - transform.position;
             targetWeight = 0.0f;
 
             if (closestTargetDistance < 5.0f)
@@ -148,11 +194,18 @@ public class Boids : MonoBehaviour
                 targetWeight = Mathf.Max(Mathf.Min(1.0f, 1 - (closestTargetDistance / 5.0f)), 0.3f);
             }
         }
+        return targetFollow;
+    }
 
-        int closestTargetAvoidIndex = 0;
-        float closestTargetAvoidDistance = 100000.0f;
+    Vector2 getAvoidingTarget()
+    {
+        Vector2 targetAvoid = new Vector2(0.0f, 0.0f);
+
         if (avoidingTarget)
         {
+            int closestTargetAvoidIndex = 0;
+            float closestTargetAvoidDistance = float.PositiveInfinity;
+
             for (int i = 0; i < targetsAvoid.Length; i++)
             {
                 if (closestTargetAvoidDistance > Vector3.Distance(targetsAvoid[i].transform.position, transform.position))
@@ -162,7 +215,7 @@ public class Boids : MonoBehaviour
                 }
             }
 
-            targetAvoid = -(targetsAvoid[closestTargetIndex].transform.position - transform.position);
+            targetAvoid = -(targetsAvoid[closestTargetAvoidIndex].transform.position - transform.position);
             targetAvoidWeight = 0.0f;
 
             if (closestTargetAvoidDistance < 3.0f)
@@ -171,21 +224,20 @@ public class Boids : MonoBehaviour
                 targetAvoidWeight = Mathf.Max(Mathf.Min(1.0f, 1 - (closestTargetAvoidDistance / 3.0f)), 0.3f);
             }
         }
+        return targetAvoid;
+    }
 
-        if (avoidingTarget)
-        {
-            velocity += targetAvoid * targetAvoidWeight * 0.012f;
-        }
+    void Update()
+    {
+        List<Boids> CloseBoids = closeBoids();
 
-        if (followingTarget)
-        {
-            velocity += targetFollow * targetWeight * 0.008f;
-        }
+        velocity += getPosition(CloseBoids) * PositionWeight * 0.003f;
+        velocity += getSeparation(CloseBoids) * SeparationWeight * 0.003f;
+        velocity += getAlignment(CloseBoids) * AlignmentWeight * 0.003f;
 
-        velocity += Position * PositionWeight * 0.003f;
-        velocity += Separation * SeparationWeight * 0.003f;
-        velocity += Alignment * AlignmentWeight * 0.003f;
-        velocity += ObstacleAvoidance * ObstableWeight;
+        velocity += getObstacleAvoidance() * ObstableWeight;
+        velocity += getFollowingTarget() * targetWeight * 0.008f;
+        velocity += getAvoidingTarget() * targetAvoidWeight * 0.012f;
 
         velocity = velocity.normalized;
 
