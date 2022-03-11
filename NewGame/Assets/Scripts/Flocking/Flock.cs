@@ -11,6 +11,9 @@ public class Flock : MonoBehaviour
     public float scale;
     public float speed;
 
+    public bool targetThis;
+    public bool avoiding;
+
     public float xMin, xMax, yMin, yMax;
 
     public List<Boids> boids;
@@ -25,13 +28,29 @@ public class Flock : MonoBehaviour
             GameObject b = Instantiate(prefab, transform.position, transform.rotation);
             Boids boid = b.GetComponent<Boids>();
             boid.flock = this;
-            boid.followingTarget = true;
-            boid.avoidingTarget = true;
-            boid.Target = gameObject;
+
+            if (avoiding)
+            {
+                boid.avoidingTarget = true;
+            }
+            else
+            {
+                boid.avoidingTarget = false;
+            }
+
+            if (targetThis)
+            {
+                boid.followingTarget = true;
+                boid.Target = gameObject;
+            }
+
             boid.xMin = xMin;
             boid.xMax = xMax;
             boid.yMin = yMin;
             boid.yMax = yMax;
+            boid.speed = speed;
+            boid.flockBoid = true;
+            boid.transform.localScale = new Vector3(scale, scale, scale);
 
             boids.Add(boid);
 

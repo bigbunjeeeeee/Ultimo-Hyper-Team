@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0.10908624, g: 0.5849056, b: 0.019312933, a: 1}
+  m_Color: {r: 0.28920433, g: 0.5882777, b: 0.6320754, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -96,18 +96,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdc2b22ca8598ba4e9f0e8565d197807, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 3
-  AvoidRange: 1
+  flock: {fileID: 0}
+  Target: {fileID: 0}
   speed: 3
+  range: 2
+  AvoidRange: 0.7
   AlignmentWeight: 1.05
   PositionWeight: 0.87
-  SeparationWeight: 3.04
+  SeparationWeight: 4
   targetWeight: 0
   targetAvoidWeight: 0
   ObstableWeight: {x: 0, y: 0}
-  followingTarget: 1
+  flockBoid: 0
+  followingTarget: 0
   avoidingTarget: 1
-  xMin: -9
-  xMax: 9
+  xMin: -8.5
+  xMax: 8.5
   yMin: -4.6
   yMax: 4.6

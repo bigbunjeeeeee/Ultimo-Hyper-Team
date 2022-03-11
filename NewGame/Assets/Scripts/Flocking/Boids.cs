@@ -22,10 +22,14 @@ public class Boids : MonoBehaviour
     public float targetAvoidWeight;
     public Vector2 ObstableWeight;
 
+    public bool flockBoid;
+
     public bool followingTarget;
     public bool avoidingTarget;
 
     public float xMin, xMax, yMin, yMax;
+
+    List<Boids> boids;
 
     void Start()
     {
@@ -42,21 +46,46 @@ public class Boids : MonoBehaviour
         {
             avoidingTarget = false;
         }
+
+        if (!flockBoid)
+        {
+            boids = new List<Boids>(FindObjectsOfType<Boids>());
+        }
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, 0.0f);
     }
 
     List<Boids> closeBoids()
     {
         List<Boids> CloseBoids = new List<Boids>();
-        for (int i = 0; i < flock.boids.Count; i++)
+
+        if (flockBoid)
         {
-            if (flock.boids[i].gameObject != gameObject)
+            for (int i = 0; i < flock.boids.Count; i++)
             {
-                if (Vector3.Distance(flock.boids[i].transform.position, transform.position) < range)
+                if (flock.boids[i].gameObject != gameObject)
                 {
-                    CloseBoids.Add(flock.boids[i]);
+                    if (Vector3.Distance(flock.boids[i].transform.position, transform.position) < range)
+                    {
+                        CloseBoids.Add(flock.boids[i]);
+                    }
                 }
             }
         }
+        else
+        {
+            for (int i = 0; i < boids.Count; i++)
+            {
+                if (boids[i].gameObject != gameObject)
+                {
+                    if (Vector3.Distance(boids[i].transform.position, transform.position) < range)
+                    {
+                        CloseBoids.Add(boids[i]);
+                    }
+                }
+            }
+        }
+        
         return CloseBoids;
     }
 
@@ -98,7 +127,7 @@ public class Boids : MonoBehaviour
 
         if (temp > 0)
         {
-            Separation = new Vector2(transform.position.x, transform.position.y) - (Separation / temp);
+            Separation = (new Vector2(transform.position.x, transform.position.y) - (Separation / temp));
             Separation.Normalize();
         }
         return Separation;
@@ -191,7 +220,7 @@ public class Boids : MonoBehaviour
 
             if (closestTargetDistance < 5.0f)
             {
-                targetWeight = Mathf.Max(Mathf.Min(1.0f, 1 - (closestTargetDistance / 5.0f)), 0.3f);
+                targetWeight = Mathf.Clamp(1 - (closestTargetDistance / 5.0f), 0.3f, 1.0f);
             }
         }
         return targetFollow;
@@ -221,9 +250,10 @@ public class Boids : MonoBehaviour
             if (closestTargetAvoidDistance < 3.0f)
             {
                 targetWeight = 0.0f;
-                targetAvoidWeight = Mathf.Max(Mathf.Min(1.0f, 1 - (closestTargetAvoidDistance / 3.0f)), 0.3f);
+                targetAvoidWeight = Mathf.Clamp(1 - (closestTargetAvoidDistance / 3.0f), 0.3f , 1.0f);
             }
         }
+
         return targetAvoid;
     }
 
@@ -232,7 +262,7 @@ public class Boids : MonoBehaviour
         List<Boids> CloseBoids = closeBoids();
 
         velocity += getPosition(CloseBoids) * PositionWeight * 0.003f;
-        velocity += getSeparation(CloseBoids) * SeparationWeight * 0.003f;
+        velocity += getSeparation(CloseBoids) * SeparationWeight * 0.005f;
         velocity += getAlignment(CloseBoids) * AlignmentWeight * 0.003f;
 
         velocity += getObstacleAvoidance() * ObstableWeight;
