@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyAIBrain : MonoBehaviour
 {
+    float timeForFirstAction;
     // Start is called before the first frame update
     void Start()
     {
