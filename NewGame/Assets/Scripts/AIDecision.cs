@@ -6,11 +6,7 @@ using UnityEngine;
 
 public abstract class AIDecision : MonoBehaviour
 {
-    public GameObject Rounder;
-    public GameObject Giant;
-    public GameObject SpeedEnemy;
-    public abstract void Decide(EnemiesList enemies);
-    
+    public abstract void Decide(EnemiesList enemies);   
 }
 
 public class DecisionMake : AIDecision
@@ -41,6 +37,6 @@ public class DecisionResult : AIDecision
 
     public override void Decide(EnemiesList enemies)
     {
-        Instantiate(Rounder, new Vector2(0, 0), Quaternion.identity);
+//Instantiate(Rounder, new Vector2(0, 0), Quaternion.identity);
     }
 }

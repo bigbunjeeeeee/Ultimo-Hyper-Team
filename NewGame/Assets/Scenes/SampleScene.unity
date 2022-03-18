@@ -561,7 +561,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 818711359}
-  collider: {fileID: 4880863730872394379}
+  obj: {fileID: 1450810890}
+  pointOfContact: {x: 0, y: 0}
+  coll: {fileID: 4880863730872394379}
 --- !u!1 &1652250424
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,7 +743,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemy: {fileID: 818711359}
-  collider: {fileID: 1928835856994226069}
+  obj: {fileID: 1710153003}
+  pointOfContact: {x: 0, y: 0}
+  coll: {fileID: 1928835856994226069}
 --- !u!1 &1755822231
 GameObject:
   m_ObjectHideFlags: 0
@@ -967,6 +971,10 @@ PrefabInstance:
     - target: {fileID: 8172252869847100047, guid: 1240ab67581496844bca20a2866ada60, type: 3}
       propertyPath: m_Size.y
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8172252869847100047, guid: 1240ab67581496844bca20a2866ada60, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8172252869847100047, guid: 1240ab67581496844bca20a2866ada60, type: 3}
       propertyPath: m_IsTrigger
