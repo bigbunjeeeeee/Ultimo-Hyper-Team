@@ -23,6 +23,7 @@ public PathFinding(int width, int height, Vector3 Origin)
     {
         return grid;
     }
+
     public List<Vector3> FindPath(Vector3 startWorldPos, Vector3 endWorldPos)
     {
         grid.GetXY(startWorldPos, out int startX, out int startY);
@@ -44,6 +45,7 @@ public PathFinding(int width, int height, Vector3 Origin)
             return vectorpath;
         }
     }
+
     private List<Node> FindPath(int startx, int starty, int endx, int endy)
     {
         Node startnode = grid.GetGridObject(startx, starty);
@@ -61,7 +63,7 @@ public PathFinding(int width, int height, Vector3 Origin)
                 node.CalculateFCost();
                 node.prevnode = null;
 
-                startnode.gcost = 999999999;
+                startnode.gcost = 0;
                 startnode.hcost = CalculateDist(startnode, endnode);
                 startnode.CalculateFCost();
 

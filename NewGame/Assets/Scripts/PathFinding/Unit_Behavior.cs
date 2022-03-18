@@ -10,6 +10,7 @@ public class Unit_Behavior : MonoBehaviour
     EnemyValues stats;
     GameObject EBase;
     GameObject PBase;
+    bool poslock = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,18 +18,33 @@ public class Unit_Behavior : MonoBehaviour
         EBase = GameObject.FindGameObjectWithTag("EnemyBase");
         PBase = GameObject.FindGameObjectWithTag("Base");
         Speed = stats.speed;
+        
+
+        //if (stats.PTeam == true)
+        //{
+        //    SetTargetPosition(EBase.transform.position);
+        //}
+        //else
+        //{
+        //    SetTargetPosition(PBase.transform.position);
+        //}
+
     }
     void Update()
     {
-        
-        if (stats.PTeam == true)
+        if (poslock != true)
         {
-            SetTargetPosition(EBase.transform.position);
+            if (stats.PTeam == true)
+            {
+                SetTargetPosition(EBase.transform.position);
+            }
+            else
+            {
+                SetTargetPosition(PBase.transform.position);
+            }
+            poslock = true;
         }
-        else
-        {
-            SetTargetPosition(PBase.transform.position);
-        }
+
         HandleMovement();
     }
     void StopMoving()
@@ -43,7 +59,7 @@ public class Unit_Behavior : MonoBehaviour
         if(pathVectorList != null)
         {
             Vector3 targetPosition = pathVectorList[currentPathIndex];
-            if(Vector3.Distance(transform.position, targetPosition) > 1f)
+            if (Vector3.Distance(transform.position, targetPosition) > 1f)
             {
                 Vector3 moveDir = (targetPosition - transform.position).normalized;
 
