@@ -721,7 +721,7 @@ GameObject:
   m_Layer: 0
   m_Name: Pathfinding
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -5487077368411116049, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -737,9 +737,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1aacfa830eebf34f985aa8063a65d07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  x: 1
-  y: 1
-  cells: 1
 --- !u!4 &1562735318
 Transform:
   m_ObjectHideFlags: 0
@@ -748,7 +745,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1562735316}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -14.97, y: 4.87, z: -1.9975877}
+  m_LocalPosition: {x: -15.04, y: -4.95, z: -1.9975877}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1144,7 +1141,7 @@ GameObject:
   - component: {fileID: 1755822237}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Base
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1370,7 +1367,7 @@ GameObject:
   - component: {fileID: 1990598878}
   m_Layer: 0
   m_Name: base2
-  m_TagString: Untagged
+  m_TagString: EnemyBase
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -11,6 +11,7 @@ public class EnemyValues : MonoBehaviour
     public float aoe;
     float timer;
     public float attackspeed;
+    public bool PTeam;
 
     private void Start()
     {
