@@ -4,7 +4,10 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Enemy
+  - BaseCollision
+  - BottomBridgeCollision
+  - TopBridgeCollision
+  - PlayerAI
   layers:
   - Default
   - TransparentFX

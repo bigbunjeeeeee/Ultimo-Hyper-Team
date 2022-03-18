@@ -27,7 +27,7 @@ public class Gold : MonoBehaviour
             eachSecondGiveOneGold = 0;
         }
 
-        Debug.Log(eachSecondGiveOneGold);
+       
 
        
        
