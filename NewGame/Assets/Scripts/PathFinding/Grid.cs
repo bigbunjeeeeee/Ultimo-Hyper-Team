@@ -12,7 +12,6 @@ public class Grid<TGridObject>
         public int x;
         public int y;
     }
-
     int width;
     int height;
     TGridObject[,] gridArray;

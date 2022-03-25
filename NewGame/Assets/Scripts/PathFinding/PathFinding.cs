@@ -83,6 +83,11 @@ public class PathFinding
             foreach(Node Nnode in GetNeighbors(currentNode))
             {
                 if (CloseList.Contains(Nnode)) continue;
+                if(!Nnode.isWalkable)
+                {
+                    CloseList.Add(Nnode);
+                    continue;
+                }
 
                 int tentGcost = currentNode.gcost + CalculateDistance(currentNode, Nnode);
                 if (tentGcost < Nnode.gcost)
@@ -129,7 +134,7 @@ public class PathFinding
 
     } 
 
-    private Node GetNode(int x, int y)
+    public Node GetNode(int x, int y)
     {
         return grid.GetGridObject(x, y);
     }
