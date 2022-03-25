@@ -16,6 +16,7 @@ public class EnemiesList : MonoBehaviour
     private Vector2 AllyBasePosition;
     private Vector2 TopSpawnOfBase;
     private Vector2 BottomSpawnOfBase;
+    private DecisionMake getDecisions;
     private DecisionMake DecisionTree()
     {
         //AllRounder
@@ -112,15 +113,25 @@ public class EnemiesList : MonoBehaviour
         Vector2 enemyDist = enemies.Peek().transform.position;
         return AllyBasePosition - enemyDist;
     }
+    void PassInDecisionTree(DecisionMake variable)
+    {
+        Decide(variable);
+    }
+    void Decide(DecisionMake variable)
+    {
+        variable.Decide(enemies);
+    }
     void Start()
     {
         AllyBasePosition = AllyBase.transform.position;
         TopSpawnOfBase = AllyBasePosition - new Vector2(0, -5);
         BottomSpawnOfBase = AllyBasePosition - new Vector2(0, 5);
+        var DoStuff = DecisionTree();
+        getDecisions = DoStuff;
     }
     void Update()
     {
-        var DoStuff = DecisionTree();
+       
         foreach (GameObject enemy in enemies)
         {
             Debug.Log(enemy);
@@ -128,7 +139,7 @@ public class EnemiesList : MonoBehaviour
         }
         
         distBetEnemAndBase();
-        DoStuff.Decide(enemies);
+        getDecisions.Decide(enemies);
 
     }
 

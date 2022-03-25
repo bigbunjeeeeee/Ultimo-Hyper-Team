@@ -12,6 +12,7 @@ public abstract class AIDecision : MonoBehaviour//Still need to find a way to kn
 public class DecisionMake : AIDecision
 {
     public Vector2 positionPlayerNpcPassBy { get; set; }
+    public bool IsItEnemy { get; set; }
     
     public AIDecision Attack { get; set; }
     public AIDecision Defend { get; set; }
@@ -20,12 +21,12 @@ public class DecisionMake : AIDecision
 
     public override void Decide(Queue<GameObject> enemies)
     {
-        
-        if(positionPlayerNpcPassBy.magnitude >= new Vector2 (4,0).magnitude)
-        {
+
+        if (positionPlayerNpcPassBy.magnitude >= new Vector2(4, 0).magnitude && ItIsEnemy)
+        { 
             this.Defend.Decide(enemies);
         }
-        else
+        else if(positionPlayerNpcPassBy.magnitude <= new Vector2(4, 0).magnitude && ItIsEnemy)
         {
             this.Attack.Decide(enemies);
         }
