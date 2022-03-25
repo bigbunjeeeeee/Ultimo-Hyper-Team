@@ -15,7 +15,8 @@ public class DecisionMake : AIDecision
     
     public AIDecision Attack { get; set; }
     public AIDecision Defend { get; set; }
-
+    //Maybe add gameObj with tag  with a get ; set;
+    //Fuck programming , delete if you see this <-
 
     public override void Decide(Queue<GameObject> enemies)
     {
