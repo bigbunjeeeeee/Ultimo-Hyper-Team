@@ -4,23 +4,23 @@ using System;
 using UnityEngine;
 
 
-public abstract class AIDecision : MonoBehaviour
+public abstract class AIDecision : MonoBehaviour//Still need to find a way to know which AllyNpc to spawn , might need another tag to add the npcs
 {
-    public abstract void Decide(EnemiesList enemies);   
+    public abstract void Decide(Queue<GameObject> enemies);   
 }
 
 public class DecisionMake : AIDecision
 {
     public Vector2 positionPlayerNpcPassBy { get; set; }
-    public Func<GameObject,bool> Test { get; set; }
+    
     public AIDecision Attack { get; set; }
     public AIDecision Defend { get; set; }
 
 
-    public override void Decide(EnemiesList enemies)
+    public override void Decide(Queue<GameObject> enemies)
     {
-        bool result = this.Test(enemies.enemies.Peek());
-        if(result)
+        
+        if(positionPlayerNpcPassBy.magnitude >= new Vector2 (4,0).magnitude)
         {
             this.Defend.Decide(enemies);
         }
@@ -36,7 +36,7 @@ public class DecisionResult : AIDecision
     public bool Result { get; set; }
     public GameObject allyToSpawn { get; set; }
     public Vector2 offsetBasePosition { get; set; }
-    public override void Decide(EnemiesList enemies)
+    public override void Decide(Queue<GameObject> enemies)
     {
         Instantiate(allyToSpawn, offsetBasePosition, Quaternion.identity);
        
