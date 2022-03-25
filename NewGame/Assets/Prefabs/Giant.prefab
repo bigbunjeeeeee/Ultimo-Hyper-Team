@@ -116,3 +116,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493d006db526a224698001259e55ad70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tget: {fileID: 0}
+  testpos: {x: 0, y: 0, z: 0}

@@ -10,7 +10,6 @@ public class Unit_Behavior : MonoBehaviour
     EnemyValues stats;
     GameObject EBase;
     GameObject PBase;
-    public GameObject tget;
     bool poslock = false;
 
     public Vector3 testpos;
