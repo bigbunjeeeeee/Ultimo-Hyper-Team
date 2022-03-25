@@ -11,15 +11,15 @@ public abstract class AIDecision : MonoBehaviour
 
 public class DecisionMake : AIDecision
 {
-    public Collision CollisionBox { get; set; }
+    public Vector2 positionPlayerNpcPassBy { get; set; }
+    public Func<GameObject,bool> Test { get; set; }
     public AIDecision Attack { get; set; }
     public AIDecision Defend { get; set; }
-    public Func<EnemiesList, bool,bool> Test { get; set; }
-    
+
+
     public override void Decide(EnemiesList enemies)
     {
-        IsEnemyInBase isTheEnemyInBaseCheck = new IsEnemyInBase();
-        bool result = this.Test(enemies, isTheEnemyInBaseCheck.isEnemyInBase);
+        bool result = this.Test(enemies.enemies.Peek());
         if(result)
         {
             this.Defend.Decide(enemies);
@@ -29,14 +29,16 @@ public class DecisionMake : AIDecision
             this.Attack.Decide(enemies);
         }
     }
-    
 }
 
 public class DecisionResult : AIDecision
 {
-
+    public bool Result { get; set; }
+    public GameObject allyToSpawn { get; set; }
+    public Vector2 offsetBasePosition { get; set; }
     public override void Decide(EnemiesList enemies)
     {
-//Instantiate(Rounder, new Vector2(0, 0), Quaternion.identity);
+        Instantiate(allyToSpawn, offsetBasePosition, Quaternion.identity);
+       
     }
 }
