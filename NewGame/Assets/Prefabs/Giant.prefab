@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5917257803313691409}
   - component: {fileID: 2518578778204736490}
   - component: {fileID: 4613156726000885659}
+  - component: {fileID: -1694066070652520654}
   m_Layer: 0
   m_Name: Giant
   m_TagString: Untagged
@@ -117,6 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493d006db526a224698001259e55ad70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  starttime: 3
   testpos: {x: 0, y: 0, z: 0}
   size: {x: 0, y: 0}
 --- !u!61 &4613156726000885659
@@ -145,3 +147,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.98, y: 3.01}
   m_EdgeRadius: 0
+--- !u!50 &-1694066070652520654
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9148919136037015589}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
