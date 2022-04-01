@@ -13,6 +13,7 @@ public class Unit_Behavior : MonoBehaviour
     bool poslock = false;
 
     public Vector3 testpos;
+    public Vector2 size;
 
     // Start is called before the first frame update
     void Start()
@@ -50,6 +51,7 @@ public class Unit_Behavior : MonoBehaviour
 
         HandleMovement();
     }
+
     void StopMoving()
     {
         pathVectorList = null;
@@ -59,7 +61,8 @@ public class Unit_Behavior : MonoBehaviour
 
     void HandleMovement()
     {
-        if(pathVectorList != null)
+    
+        if (pathVectorList != null)
         {
             Vector3 targetPosition = pathVectorList[currentPathIndex];
             if (Vector3.Distance(transform.position, targetPosition) > 1f)
@@ -77,7 +80,7 @@ public class Unit_Behavior : MonoBehaviour
                     StopMoving();
                 }
             }
-        }
+        } 
     }
 
     public Vector3 GetPos()
@@ -97,4 +100,23 @@ public class Unit_Behavior : MonoBehaviour
             pathVectorList.RemoveAt(0);
         }
     }
+
+    //public void EnemyAttack()
+    //{
+    //    Collider2D HitCollider = Physics2D.OverlapBox(transform.position, size, 0f);
+    //    if(HitCollider.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
+    //    {
+    //        StopMoving();
+    //        poslock = false;
+    //    }
+    //}
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
+        {
+
+        }
+    }
+
 }
