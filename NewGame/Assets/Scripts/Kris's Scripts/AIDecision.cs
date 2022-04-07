@@ -22,14 +22,14 @@ public class DecisionMake : AIDecision
     public override void Decide(Queue<GameObject> enemies)
     {
 
-        if (positionPlayerNpcPassBy.magnitude >= new Vector2(4, 0).magnitude && ItIsEnemy)
-        { 
-            this.Defend.Decide(enemies);
-        }
-        else if(positionPlayerNpcPassBy.magnitude <= new Vector2(4, 0).magnitude && ItIsEnemy)
-        {
-            this.Attack.Decide(enemies);
-        }
+        //if (positionPlayerNpcPassBy.magnitude >= new Vector2(4, 0).magnitude && ItIsEnemy)
+        //{ 
+        //    this.Defend.Decide(enemies);
+        //}
+        //else if(positionPlayerNpcPassBy.magnitude <= new Vector2(4, 0).magnitude && ItIsEnemy)
+        //{
+        //    this.Attack.Decide(enemies);
+        //}
     }
 }
 
