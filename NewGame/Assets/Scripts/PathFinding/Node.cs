@@ -16,13 +16,18 @@ public class Node
 
     public Node prevnode;
     public Node(Grid<Node> grid, int x, int y)
-    {
+    {   
         this.grid = grid;
         this.x = x;
         this.y = y;
         isWalkable = true;
     }
 
+    public void SetIsWalkable(bool isWalkable)
+    {
+        this.isWalkable = isWalkable;
+        grid.TriggerGridObjectChanged(x, y);
+    }
     public void CalculateFCost()
     {
         fcost = gcost + hcost;

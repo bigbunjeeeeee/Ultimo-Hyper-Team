@@ -36,7 +36,7 @@ public class PathFinding
             List<Vector3> vectorPath = new List<Vector3>();
             foreach(Node node in path)
             {
-                vectorPath.Add(new Vector3(node.x, node.y) * grid.GetCellSize() + originpos * grid.GetCellSize() * 1);
+                vectorPath.Add(new Vector3(node.x, node.y) * grid.GetCellSize() + originpos * grid.GetCellSize());
             }
             return vectorPath;
         }
@@ -82,7 +82,10 @@ public class PathFinding
 
             foreach(Node Nnode in GetNeighbors(currentNode))
             {
-                if (CloseList.Contains(Nnode)) continue;
+                if (CloseList.Contains(Nnode) || !Nnode.isWalkable)
+                {
+                    continue;
+                }
 
                 int tentGcost = currentNode.gcost + CalculateDistance(currentNode, Nnode);
                 if (tentGcost < Nnode.gcost)
@@ -129,7 +132,7 @@ public class PathFinding
 
     } 
 
-    private Node GetNode(int x, int y)
+    public Node GetNode(int x, int y)
     {
         return grid.GetGridObject(x, y);
     }
