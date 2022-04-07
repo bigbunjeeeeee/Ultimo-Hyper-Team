@@ -11,7 +11,7 @@ public class Unit_Behavior : MonoBehaviour
     GameObject EBase;
     GameObject PBase;
     bool poslock = false;
-    
+
     public float starttime;
     float time;
     public Vector3 testpos;
@@ -61,11 +61,11 @@ public class Unit_Behavior : MonoBehaviour
         pathVectorList = null;
     }
 
-    
+
 
     void HandleMovement()
     {
-    
+
         if (pathVectorList != null)
         {
             Vector3 targetPosition = pathVectorList[currentPathIndex];
@@ -79,12 +79,12 @@ public class Unit_Behavior : MonoBehaviour
             else
             {
                 currentPathIndex++;
-                if(currentPathIndex >= pathVectorList.Count)
+                if (currentPathIndex >= pathVectorList.Count)
                 {
                     StopMoving();
                 }
             }
-        } 
+        }
     }
 
     public Vector3 GetPos()
@@ -99,7 +99,7 @@ public class Unit_Behavior : MonoBehaviour
 
         //Debug.Log(targetPosition);
 
-        if(pathVectorList != null && pathVectorList.Count > 1)
+        if (pathVectorList != null && pathVectorList.Count > 1)
         {
             pathVectorList.RemoveAt(0);
         }
@@ -117,40 +117,42 @@ public class Unit_Behavior : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         Debug.Log("Called");
-        if(collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
+        if (collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
         {
-        StopMoving();
-        Debug.Log("hit");
-        }
-        //poslock = false;
-        bool Engage = true;
-        while (Engage == true)
-        {
-            time -= Time.deltaTime;
-            if(time <= 0)
+            StopMoving();
+            Debug.Log("hit");
+
+            poslock = false;
+            bool Engage = true;
+            while (Engage == true)
             {
-                collision.gameObject.GetComponent<EnemyValues>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
-                Debug.Log("Damage");
-                time = starttime;
-            }
-            //if(collision.gameObject == null)
-            //{
-            //    Engage = false;
-            //}
-            if (collision.gameObject.GetComponent<EnemyValues>().health <= 0)
-            {
-                Engage = false;
-                poslock = false;
+                time -= Time.deltaTime;
+                if (time <= 0)
+                {
+                    collision.gameObject.GetComponent<EnemyValues>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
+                    Debug.Log("Damage");
+                    time = starttime;
+                }
+                //if(collision.gameObject == null)
+                //{
+                //    Engage = false;
+                //}
+                if (collision.gameObject.GetComponent<EnemyValues>().health <= 0)
+                {
+                    Engage = false;
+                    poslock = false;
+                }
             }
         }
-        
-        
-            
-        
-            
+
+
+
+
+
 
     }
-
-
-
 }
+
+
+
+
