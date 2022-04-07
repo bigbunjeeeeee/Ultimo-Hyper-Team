@@ -5,12 +5,14 @@ TagManager:
   serializedVersion: 2
   tags:
   - Enemy
-  - placingArea
+  - EnemyBase
+  - Base
+  - Wall
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Wall
   - Water
   - UI
   - 
