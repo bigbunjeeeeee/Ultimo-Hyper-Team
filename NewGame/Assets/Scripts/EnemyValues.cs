@@ -13,6 +13,7 @@ public class EnemyValues : MonoBehaviour
     float timer;
     public float attackspeed;
     public bool PTeam = false;
+    public bool IsDead = false;
 
     //private void Start()
     //{
@@ -22,6 +23,7 @@ public class EnemyValues : MonoBehaviour
     {
         if (health <= 0)
         {
+            IsDead = true;
             Destroy(this.gameObject);
         }
 

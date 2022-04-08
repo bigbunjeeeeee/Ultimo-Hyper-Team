@@ -14,43 +14,56 @@ public class EnemiesList : MonoBehaviour
     public GameObject AllyHeavy;
     //For the base just reference it from the World
     public GameObject AllyBase;
+
     private Vector2 AllyBasePosition;
     private Vector2 TopSpawnOfBase;
     private Vector2 BottomSpawnOfBase;
 
     public GameObject EnemyGoldObj;
+
     private EnemyGold AIGold;
+    private EnemyValues getHealth;
+
     private int gold;
+
     private DecisionMake DecisionTree()
     {
-        var EnemyNearBaseTopRounder = new DecisionMake
-        {
+        //DecisionMake EnemyNearBaseTopRounder = (DecisionMake)ScriptableObject.CreateInstance(typeof(DecisionMake));
+        //EnemyNearBaseTopRounder.EnemyTeamTag = enemies.Peek().tag == "AllRounder";
+        //EnemyNearBaseTopRounder.IsOnPTeam = IsPeekQueueEnemyFromThePlayer();
+        //DecisionResult EnemyNearBaseTopRounderResult = (DecisionResult)ScriptableObject.CreateInstance(typeof(DecisionResult));
+        //EnemyNearBaseTopRounderResult.Result = true;
+        //EnemyNearBaseTopRounderResult.allyToSpawn = AllyAllrounder;
+        //EnemyNearBaseTopRounderResult.offsetBasePosition = TopSpawnOfBase;
+        //EnemyNearBaseTopRounder.Defend defend = EnemyNearBaseTopRounderResult;
+        // EnemyNearBaseTopRounder.Defend = 
 
+        var EnemyNearBaseTopRounder = new DecisionMake()
+        {
             EnemyTeamTag = enemies.Peek().tag == "AllRounder",
             IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
-
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
             Defend = new DecisionResult { Result = true, allyToSpawn = AllyAllrounder, offsetBasePosition = TopSpawnOfBase }
         };
 
-        var EnemyNearBaseBotRounder = new DecisionMake
+        var EnemyNearBaseBotRounder = new DecisionMake()
         {
 
             EnemyTeamTag = enemies.Peek().tag == "Speed",
             IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
 
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
-            Defend = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = BottomSpawnOfBase }
+            Defend = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = TopSpawnOfBase }
         };
 
-        var EnemyNearBaseTopHeavy = new DecisionMake
+        var EnemyNearBaseTopHeavy = new DecisionMake()
         {
 
             EnemyTeamTag = enemies.Peek().tag == "Giant",
             IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
 
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
-            Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = BottomSpawnOfBase }
+            Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = TopSpawnOfBase }
         };
 
        if(enemies.Peek().tag == "Speed")
@@ -83,7 +96,7 @@ public class EnemiesList : MonoBehaviour
 
     GameObject ReturnARandomObject()
     {
-        int randomNumber = Random.Range(1, 3);
+        int randomNumber = Random.Range(1, 4);
         if (randomNumber == 1)
         {
             return AllyAllrounder;
@@ -100,59 +113,53 @@ public class EnemiesList : MonoBehaviour
         {
             return null;
         }
-       
     }
   
     void Awake()
     {
         AIGold = EnemyGoldObj.GetComponent<EnemyGold>();
-       
     }
     void Start()
     {
         AllyBasePosition = AllyBase.transform.position;
         TopSpawnOfBase = AllyBasePosition - new Vector2(0, -1.5f);
         BottomSpawnOfBase = AllyBasePosition - new Vector2(0, 5);
-        enemies = new Queue<GameObject>();
-
-       
-        
-        
+        enemies = new Queue<GameObject>();    
+    }
+    void RemoveFromQueIfDead()
+    {
+        float getFirstInQueHealth = getHealth.health;
+        if (getFirstInQueHealth <=0 )
+        {
+            enemies.Dequeue();
+        }
     }
     void Update()
     {
         gold = AIGold.enemyGold;
        
+        if (enemies.Count != 0 && enemies.Peek() != null)
+        {
+            getHealth = enemies.Peek().GetComponent<EnemyValues>();
+            RemoveFromQueIfDead();
+        }
         if (enemies.Count != 0)
         {
-            
-            if (gold >4)
+
+            if ( gold > 4)
             {
-
-                ReturnARandomObject();
-                AIGold.CostPerUnit(DecisionTree(), IsPeekQueueEnemyFromThePlayer(), enemies);
-
-
+                AIGold.CostPerUnit(DecisionTree(),  enemies);
             }
-           
-            //foreach (GameObject enemy in enemies)
-            //{
-                
-               
-            //    Debug.Log(enemy);
-
-
-            //}
-            
         }
         else
         {
-            //Instantiate(AllyAllrounder, TopSpawnOfBase, Quaternion.identity);
-
+            if (gold > 4)
+            {
+                
+                AIGold.RandomUnit(ReturnARandomObject(),TopSpawnOfBase);
+            }
         }
-
-
-
+        Debug.Log(enemies.Count);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -164,11 +171,8 @@ public class EnemiesList : MonoBehaviour
 
             
            enemies.Enqueue(other.gameObject);//pointing to Enemies's queue "enemies".
-            //Debug.Log(enemies.Count);
+            
         }
 
-
-
     }
-
 }

@@ -124,7 +124,8 @@ public class Unit_Behavior : MonoBehaviour
         {
 
             Debug.Log("Called");
-            if (collision.gameObject.tag != "BottomBridgeCollision" && collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
+            if (collision.gameObject.tag != "BottomBridgeCollision" && collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)// I added the BottomBridge Collision - Kris , Leave it there/
+            
             {
                 StopMoving();
                 Debug.Log("hit");
