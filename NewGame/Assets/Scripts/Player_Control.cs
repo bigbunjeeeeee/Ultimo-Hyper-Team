@@ -23,7 +23,7 @@ public class Player_Control : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 Instantiate(prefab, transform.position, transform.rotation);
-                prefab.GetComponent<EnemyValues>().PTeam = true;
+                //prefab.GetComponent<EnemyValues>().PTeam = true;
                 Destroy(gameObject);
             }
         }
