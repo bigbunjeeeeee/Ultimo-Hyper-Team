@@ -11,7 +11,6 @@ public class Unit_Behavior : MonoBehaviour
     GameObject EBase;
     GameObject PBase;
     bool poslock = false;
-
     public float starttime;
     float time;
     public Vector3 testpos;
@@ -116,12 +115,13 @@ public class Unit_Behavior : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collision)
     {
+        
         Debug.Log("Called");
-        if (collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
+        if (collision.gameObject.tag != "BottomBridgeCollision" && collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
         {
             StopMoving();
             Debug.Log("hit");
-
+            
             poslock = false;
             bool Engage = true;
             while (Engage == true)

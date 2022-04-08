@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -4510655990103774208}
   m_Layer: 0
   m_Name: AllRounder
-  m_TagString: Untagged
+  m_TagString: AllRounder
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   maxHealth: 10
   damage: 5
   aoe: 5
+  cost: 0
   attackspeed: 1
   PTeam: 1
 --- !u!114 &-5660374133239468143

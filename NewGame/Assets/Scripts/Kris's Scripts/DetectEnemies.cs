@@ -8,24 +8,28 @@ public class DetectEnemies : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
-    
+
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.tag == "PlayerAI")
+        EnemyValues enemy;
+        enemy = other.gameObject.GetComponent<EnemyValues>();
+        if (enemy.PTeam == true)
         {
-            Debug.Log("Has Triggered");
-            enemies.enemies.Enqueue(other.gameObject);
+
+            //Debug.Log("Has Triggered");
+            //enemies.enemies.Enqueue(other.gameObject);//pointing to Enemies's queue "enemies".
+
         }
-        //My brain just clicked on this 
-        // If other.tag == "PlayerAllRounder" 
-        //add it to que, same for the other ""PlayerHeavy" ,"PlayerSpeedy" 
+
+
+
     }
 }

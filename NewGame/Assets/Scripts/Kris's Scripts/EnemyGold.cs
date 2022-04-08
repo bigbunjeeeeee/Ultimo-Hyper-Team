@@ -2,16 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-public class Gold : MonoBehaviour
+public class EnemyGold : MonoBehaviour
 {
-    public int gold = 0;
-    public Text goldText;
+    public Text enemyText;
+    public int enemyGold = 0;
     private float eachSecondGiveOneGold = 0;
     // Start is called before the first frame update
     void Start()
     {
-
-        goldText.text = "Gold: " + gold;
+        enemyText.text = "Gold: " + enemyGold;
     }
 
     // Update is called once per frame
@@ -20,15 +19,16 @@ public class Gold : MonoBehaviour
         eachSecondGiveOneGold += Time.deltaTime;
         if (eachSecondGiveOneGold > 1.0f)
         {
-            gold = gold + 1;
-            goldText.text = "Gold: " + gold ;//+ "\nEnemy Gold: " + enemyGold;
-
+            enemyGold = enemyGold + 1;
+            enemyText.text = "Gold: " + enemyGold;
             eachSecondGiveOneGold = 0;
+           
         }
+    }
 
-        //Debug.Log(eachSecondGiveOneGold);
-
-       
-       
+    public void CostPerUnit(DecisionMake Decide, bool Bollean,Queue<GameObject>enemies )
+    {
+        enemyGold = enemyGold - 4;
+        Decide.Decide(enemies);
     }
 }

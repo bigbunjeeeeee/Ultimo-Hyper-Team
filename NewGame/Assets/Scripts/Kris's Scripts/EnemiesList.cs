@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using Random = UnityEngine.Random;
 using UnityEngine;
 
 public class EnemiesList : MonoBehaviour
 {
     // ENEMIES NEED BOX COLLIDER WITH A TRIGGER ON
-    public Queue<GameObject> enemies { get; set; }
+    public Queue<GameObject> enemies;
     //Need to Insert Prefabs from foulders
     public GameObject AllyAllrounder;
     public GameObject AllySpeed;
@@ -16,132 +17,151 @@ public class EnemiesList : MonoBehaviour
     private Vector2 AllyBasePosition;
     private Vector2 TopSpawnOfBase;
     private Vector2 BottomSpawnOfBase;
-    private DecisionMake getDecisions;
+
+    public GameObject EnemyGoldObj;
+    private EnemyGold AIGold;
+    private int gold;
     private DecisionMake DecisionTree()
     {
-        //AllRounder
-        var EnemyPushingTopRounder = new DecisionMake {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = true, allyToSpawn = AllyAllrounder, offsetBasePosition = TopSpawnOfBase },
-            Defend = new DecisionResult { Result =  false, allyToSpawn = null,  offsetBasePosition = new Vector2(0, 0) }
-        };
-        var EnemyPushingBotRounder = new DecisionMake
-        {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = true, allyToSpawn = AllyAllrounder, offsetBasePosition = BottomSpawnOfBase },
-            Defend = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) }
-        };
         var EnemyNearBaseTopRounder = new DecisionMake
         {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
+
+            EnemyTeamTag = enemies.Peek().tag == "AllRounder",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
             Defend = new DecisionResult { Result = true, allyToSpawn = AllyAllrounder, offsetBasePosition = TopSpawnOfBase }
         };
+
         var EnemyNearBaseBotRounder = new DecisionMake
         {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
-            Defend = new DecisionResult { Result = true, allyToSpawn = AllyAllrounder, offsetBasePosition = BottomSpawnOfBase }
-        };
 
-        //Speed
-        var EnemyPushingTopSpeedy = new DecisionMake
-        {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = TopSpawnOfBase },
-            Defend = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) }
-        };
-        var EnemyPushingBotSpeedy = new DecisionMake
-        {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = BottomSpawnOfBase },
-            Defend = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) }
-        };
-        var EnemyNearBaseTopSpeedy = new DecisionMake
-        {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
-            Defend = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = TopSpawnOfBase }
-        };
-        var EnemyNearBaseBotSpeedy = new DecisionMake
-        {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
+            EnemyTeamTag = enemies.Peek().tag == "Speed",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
             Defend = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = BottomSpawnOfBase }
         };
 
-        //Heavy 
-        var EnemyPushingTopHeavy = new DecisionMake
-        {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = TopSpawnOfBase },
-            Defend = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) }
-        };
-        var EnemyPushingBotHeavy = new DecisionMake
-        {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = BottomSpawnOfBase },
-            Defend = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) }
-        };
         var EnemyNearBaseTopHeavy = new DecisionMake
         {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
+
+            EnemyTeamTag = enemies.Peek().tag == "Giant",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
             Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = TopSpawnOfBase }
         };
-        var EnemyNearBaseBotHeavy = new DecisionMake
-        {
-            positionPlayerNpcPassBy = distBetEnemAndBase(),
-            Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
-            Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = BottomSpawnOfBase }
-        };
 
-        var NoOnePushes= new DecisionMake
+        var NoEnemy = new DecisionMake
         {
-            positionPlayerNpcPassBy = new Vector2(0,0),
-            Attack = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = TopSpawnOfBase },
+            EnemyTeamTag = false,
+            IsOnPTeam = false,
+
+            Attack = new DecisionResult { Result = true, allyToSpawn = ReturnARandomObject(), offsetBasePosition = TopSpawnOfBase },
             Defend = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) }
         };
-        return NoOnePushes;
+        return NoEnemy;
     }
-    public EnemiesList()
+
+    //public EnemiesList()
+    //{
+    //    enemies = new Queue<GameObject>();
+    //}
+
+    bool IsPeekQueueEnemyFromThePlayer()
     {
-        enemies = new Queue<GameObject>();
+        EnemyValues getBool = enemies.Peek().GetComponent<EnemyValues>();
+        return getBool.PTeam;
     }
-    public Vector2 distBetEnemAndBase()
+
+    GameObject ReturnARandomObject()
     {
-        Vector2 enemyDist = enemies.Peek().transform.position;
-        return AllyBasePosition - enemyDist;
+        int randomNumber = Random.Range(1, 3);
+        if (randomNumber == 1)
+        {
+            return AllyAllrounder;
+        }
+        else if (randomNumber == 2)
+        {
+            return AllySpeed;
+        }
+        else if (randomNumber == 3)
+        {
+            return AllyHeavy;
+        }
+        else
+        {
+            return null;
+        }
+       
     }
-    void PassInDecisionTree(DecisionMake variable)
+  
+    void Awake()
     {
-        Decide(variable);
-    }
-    void Decide(DecisionMake variable)
-    {
-        variable.Decide(enemies);
+        AIGold = EnemyGoldObj.GetComponent<EnemyGold>();
+       
     }
     void Start()
     {
         AllyBasePosition = AllyBase.transform.position;
-        TopSpawnOfBase = AllyBasePosition - new Vector2(0, -5);
+        TopSpawnOfBase = AllyBasePosition - new Vector2(0, -1.5f);
         BottomSpawnOfBase = AllyBasePosition - new Vector2(0, 5);
-        var DoStuff = DecisionTree();
-        getDecisions = DoStuff;
+        enemies = new Queue<GameObject>();
+
+       
+        
+        
     }
     void Update()
     {
+        gold = AIGold.enemyGold;
        
-        foreach (GameObject enemy in enemies)
+        if (enemies.Count != 0)
         {
-            Debug.Log(enemy);
+            
+            if (gold >4)
+            {
+                var GetDecisions = DecisionTree();
+                AIGold.CostPerUnit(DecisionTree(), IsPeekQueueEnemyFromThePlayer(), enemies);
+
+
+            }
+           
+            //foreach (GameObject enemy in enemies)
+            //{
+                
+               
+            //    Debug.Log(enemy);
+
+
+            //}
             
         }
-        
-        distBetEnemAndBase();
-        getDecisions.Decide(enemies);
+        else
+        {
+            //Instantiate(AllyAllrounder, TopSpawnOfBase, Quaternion.identity);
+
+        }
+
+
 
     }
 
-    
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        EnemyValues enemy  ;
+        enemy = other.gameObject.GetComponent<EnemyValues>();
+        if (enemy.PTeam == true)
+        {
+
+            
+           enemies.Enqueue(other.gameObject);//pointing to Enemies's queue "enemies".
+            //Debug.Log(enemies.Count);
+        }
+
+
+
+    }
+
 }

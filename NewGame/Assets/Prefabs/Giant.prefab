@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -1694066070652520654}
   m_Layer: 0
   m_Name: Giant
-  m_TagString: Untagged
+  m_TagString: Giant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,8 +104,9 @@ MonoBehaviour:
   maxHealth: 30
   damage: 10
   aoe: 0
+  cost: 0
   attackspeed: 3
-  PTeam: 0
+  PTeam: 1
 --- !u!114 &2518578778204736490
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -8,6 +8,12 @@ TagManager:
   - EnemyBase
   - Base
   - Wall
+  - BottomBridgeCollision
+  - TopBridgeCollision
+  - BaseCollision
+  - AllRounder
+  - Speed
+  - Giant
   layers:
   - Default
   - TransparentFX

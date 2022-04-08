@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1759656404296314175}
   m_Layer: 0
   m_Name: Speed_enemy
-  m_TagString: Untagged
+  m_TagString: Speed
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -104,6 +104,7 @@ MonoBehaviour:
   maxHealth: 5
   damage: 2
   aoe: 0
+  cost: 0
   attackspeed: 0.5
   PTeam: 1
 --- !u!114 &-3443589411866133839
