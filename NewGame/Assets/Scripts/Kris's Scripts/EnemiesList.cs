@@ -50,18 +50,24 @@ public class EnemiesList : MonoBehaviour
             IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
 
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
-            Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = TopSpawnOfBase }
+            Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = BottomSpawnOfBase }
         };
 
-        var NoEnemy = new DecisionMake
+       if(enemies.Peek().tag == "Speed")
         {
-            EnemyTeamTag = false,
-            IsOnPTeam = false,
+            return EnemyNearBaseBotRounder;
+        }
 
-            Attack = new DecisionResult { Result = true, allyToSpawn = ReturnARandomObject(), offsetBasePosition = TopSpawnOfBase },
-            Defend = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) }
-        };
-        return NoEnemy;
+        if (enemies.Peek().tag == "AllRounder" )
+        {
+            return EnemyNearBaseTopRounder;
+
+        }
+        if (enemies.Peek().tag == "Giant")
+        {
+            return EnemyNearBaseTopHeavy;
+        }
+        return null;
     }
 
     //public EnemiesList()
@@ -122,7 +128,8 @@ public class EnemiesList : MonoBehaviour
             
             if (gold >4)
             {
-                var GetDecisions = DecisionTree();
+
+                ReturnARandomObject();
                 AIGold.CostPerUnit(DecisionTree(), IsPeekQueueEnemyFromThePlayer(), enemies);
 
 

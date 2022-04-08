@@ -106,7 +106,7 @@ MonoBehaviour:
   aoe: 5
   cost: 0
   attackspeed: 1
-  PTeam: 1
+  PTeam: 0
 --- !u!114 &-5660374133239468143
 MonoBehaviour:
   m_ObjectHideFlags: 0

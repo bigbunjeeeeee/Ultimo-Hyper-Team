@@ -24,8 +24,8 @@ public class DecisionMake : AIDecision
 
     public override void Decide(Queue<GameObject> enemies)
     {
-
-        if (IsOnPTeam)
+        
+        if (EnemyTeamTag && IsOnPTeam )
         {
             this.Defend.Decide(enemies);
         }
