@@ -8,6 +8,10 @@ TagManager:
   - EnemyBase
   - Base
   - Wall
+  - BottomBridgeCollision
+  - TopBridgeCollision
+  - BaseCollision
+  - placingArea
   layers:
   - Default
   - TransparentFX
