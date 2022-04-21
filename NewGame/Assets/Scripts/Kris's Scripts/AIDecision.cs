@@ -6,7 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "AI Decision", menuName = "ScriptableObjects/SpawnManagerAI_Decision", order = 1)]
 public abstract class AIDecision : ScriptableObject//Still need to find a way to know which AllyNpc to spawn , might need another tag to add the npcs
 {
-    public abstract void Decide(Queue<GameObject> enemies);   
+    public abstract void Decide(GameObject enemies);   
 }
 
 [CreateAssetMenu(fileName = "AI Decision1", menuName = "ScriptableObjects/SpawnManagerAI_Decision1", order = 2)]
@@ -15,17 +15,15 @@ public class DecisionMake : AIDecision
     public bool EnemyTeamTag { get; set; }
     public bool IsOnPTeam { get; set; }
    
-    public bool IsItEnemy { get; set; }
-
     public AIDecision Attack { get; set; }
     public AIDecision Defend { get; set; }
     //Maybe add gameObj with tag  with a get ; set;
     //Fuck programming , delete if you see this <-
 
-    public override void Decide(Queue<GameObject> enemies)
+    public override void Decide(GameObject enemies)
     {
         
-        if (EnemyTeamTag && IsOnPTeam )
+        if (EnemyTeamTag  && IsOnPTeam )
         {
             this.Defend.Decide(enemies);
         }
@@ -41,9 +39,11 @@ public class DecisionResult : AIDecision
     public bool Result { get; set; }
     public GameObject allyToSpawn { get; set; }
     public Vector2 offsetBasePosition { get; set; }
-    public override void Decide(Queue<GameObject> enemies)
+    public override void Decide(GameObject enemies)
     {
+        EnemyValues getIsPteam = allyToSpawn.GetComponent<EnemyValues>();
+        getIsPteam.PTeam = false;
+        Debug.Log(getIsPteam.PTeam);
         Instantiate(allyToSpawn, offsetBasePosition, Quaternion.identity);
-       
     }
 }

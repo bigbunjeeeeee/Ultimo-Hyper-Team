@@ -9,5 +9,6 @@ public class build_Allround : MonoBehaviour
     public void spawn_blueprint()
     {
         Instantiate(Controller_blueprint);
+       
     }
 }

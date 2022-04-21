@@ -26,9 +26,17 @@ public class EnemyGold : MonoBehaviour
         }
     }
 
-    public void CostPerUnit(DecisionMake Decide, bool Bollean,Queue<GameObject>enemies )
+    public void CostPerUnit(DecisionMake Decide, bool Bollean,GameObject enemy )
     {
         enemyGold = enemyGold - 4;
-        Decide.Decide(enemies);
+        Decide.Decide(enemy);
+    }
+    public void CostPerRandomUnit(GameObject RandomAlly,Vector2 randomSpawn)
+    {
+        enemyGold = enemyGold -4 ;
+        EnemyValues getIsPteam = RandomAlly.GetComponent<EnemyValues>();
+        getIsPteam.PTeam = false;
+        Debug.Log(getIsPteam.PTeam);
+        Instantiate(RandomAlly, randomSpawn, Quaternion.identity);
     }
 }

@@ -44,7 +44,7 @@ public class Unit_Behavior : MonoBehaviour
             {
                 SetTargetPosition(EBase.transform.position);
             }
-            else
+            else if(stats.PTeam == false)
             {
                 SetTargetPosition(PBase.transform.position);
             }

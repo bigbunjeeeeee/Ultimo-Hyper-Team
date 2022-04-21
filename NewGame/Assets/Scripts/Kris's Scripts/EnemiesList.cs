@@ -7,7 +7,7 @@ using UnityEngine;
 public class EnemiesList : MonoBehaviour
 {
     // ENEMIES NEED BOX COLLIDER WITH A TRIGGER ON
-    public Queue<GameObject> enemies;
+    public List<GameObject> enemies;
     //Need to Insert Prefabs from foulders
     public GameObject AllyAllrounder;
     public GameObject AllySpeed;
@@ -18,16 +18,17 @@ public class EnemiesList : MonoBehaviour
     private Vector2 TopSpawnOfBase;
     private Vector2 BottomSpawnOfBase;
 
+   
     public GameObject EnemyGoldObj;
     private EnemyGold AIGold;
     private int gold;
-    private DecisionMake DecisionTree()
+    private DecisionMake DecisionTree(GameObject enemy)
     {
         var EnemyNearBaseTopRounder = new DecisionMake
         {
 
-            EnemyTeamTag = enemies.Peek().tag == "AllRounder",
-            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+            EnemyTeamTag = enemy.tag == "AllRounder",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(enemy),
 
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
             Defend = new DecisionResult { Result = true, allyToSpawn = AllyAllrounder, offsetBasePosition = TopSpawnOfBase }
@@ -36,48 +37,44 @@ public class EnemiesList : MonoBehaviour
         var EnemyNearBaseBotRounder = new DecisionMake
         {
 
-            EnemyTeamTag = enemies.Peek().tag == "Speed",
-            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+            EnemyTeamTag = enemy.tag == "Speed",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(enemy),
 
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
-            Defend = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = BottomSpawnOfBase }
+            Defend = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = TopSpawnOfBase }
         };
 
         var EnemyNearBaseTopHeavy = new DecisionMake
         {
 
-            EnemyTeamTag = enemies.Peek().tag == "Giant",
-            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+            EnemyTeamTag = enemy.tag == "Giant",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(enemy),
 
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
-            Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = BottomSpawnOfBase }
+            Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = TopSpawnOfBase }
         };
 
-       if(enemies.Peek().tag == "Speed")
+       if(enemy.tag == "Speed")
         {
             return EnemyNearBaseBotRounder;
         }
 
-        if (enemies.Peek().tag == "AllRounder" )
+        if (enemy.tag == "AllRounder" )
         {
             return EnemyNearBaseTopRounder;
 
         }
-        if (enemies.Peek().tag == "Giant")
+        if (enemy.tag == "Giant")
         {
             return EnemyNearBaseTopHeavy;
         }
         return null;
     }
 
-    //public EnemiesList()
-    //{
-    //    enemies = new Queue<GameObject>();
-    //}
 
-    bool IsPeekQueueEnemyFromThePlayer()
+    bool IsPeekQueueEnemyFromThePlayer(GameObject enemy)
     {
-        EnemyValues getBool = enemies.Peek().GetComponent<EnemyValues>();
+        EnemyValues getBool = enemy.GetComponent<EnemyValues>();
         return getBool.PTeam;
     }
 
@@ -108,50 +105,66 @@ public class EnemiesList : MonoBehaviour
         AIGold = EnemyGoldObj.GetComponent<EnemyGold>();
        
     }
+
     void Start()
     {
         AllyBasePosition = AllyBase.transform.position;
-        TopSpawnOfBase = AllyBasePosition - new Vector2(0, -1.5f);
+        TopSpawnOfBase = AllyBasePosition - new Vector2(0, -0.5f);
         BottomSpawnOfBase = AllyBasePosition - new Vector2(0, 5);
-        enemies = new Queue<GameObject>();
-
-       
-        
-        
+        enemies = new List<GameObject>();
     }
+
     void Update()
     {
         gold = AIGold.enemyGold;
+        // Debug.Log(enemies.Count);
        
-        if (enemies.Count != 0)
+        for (int i = 0; i < enemies.Count; i++)
         {
-            
-            if (gold >4)
+            GameObject enemy = enemies[i];
+            if(enemy != null)
             {
+                EnemyValues getHP = enemy.GetComponent<EnemyValues>();
+                if (enemy == null)
+                {
+                    break;
 
-                ReturnARandomObject();
-                AIGold.CostPerUnit(DecisionTree(), IsPeekQueueEnemyFromThePlayer(), enemies);
-
-
+                }
+                else if (getHP.health <= 0)
+                {
+                    enemies.RemoveAt(i);
+                }
             }
-           
-            //foreach (GameObject enemy in enemies)
-            //{
-                
-               
-            //    Debug.Log(enemy);
-
-
-            //}
             
         }
-        else
+
+            if (enemies.Count > 0)
         {
-            //Instantiate(AllyAllrounder, TopSpawnOfBase, Quaternion.identity);
+            for (int i = 0; i<enemies.Count;i++)
+            {
+                GameObject enemy = enemies[i];
 
+                if (enemies.Count == 0)
+                {
+                    break;
+
+                }
+                else if (gold > 4)
+                {
+                    AIGold.CostPerUnit(DecisionTree(enemy), IsPeekQueueEnemyFromThePlayer(enemy), enemy);
+                    if (enemy == null)
+                    {
+                        i++;
+                    }
+
+                }  
+            } 
+            
         }
-
-
+       else if (gold > 4 && enemies.Count == 0)
+       {
+            AIGold.CostPerRandomUnit(ReturnARandomObject(), TopSpawnOfBase);
+       }
 
     }
 
@@ -161,10 +174,7 @@ public class EnemiesList : MonoBehaviour
         enemy = other.gameObject.GetComponent<EnemyValues>();
         if (enemy.PTeam == true)
         {
-
-            
-           enemies.Enqueue(other.gameObject);//pointing to Enemies's queue "enemies".
-            //Debug.Log(enemies.Count);
+           enemies.Add(other.gameObject);//pointing to Enemies's queue "enemies".
         }
 
 

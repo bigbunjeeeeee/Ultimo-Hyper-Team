@@ -577,9 +577,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f165918efe7a0498baf05f6449c414, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AllyAllrounder: {fileID: 9202628173846713714, guid: de011bbb8734ad4478ee07e640dbea8f, type: 3}
-  AllySpeed: {fileID: 9183682332968432042, guid: 893bdfcd54bb30543a9cbc08c973dd9c, type: 3}
-  AllyHeavy: {fileID: 9148919136037015589, guid: 48ee757e07f9b1149a692109e8b5e9b3, type: 3}
+  enemies: []
+  AllyAllrounder: {fileID: 8604486364465364014, guid: 41fafe9a9e712284cafee68e2525e31b, type: 3}
+  AllySpeed: {fileID: 2961062235280168426, guid: 1310f6a9db595e447901b8feaf5122bc, type: 3}
+  AllyHeavy: {fileID: 4340594294611768833, guid: 973703d3f8425a94da064e816dbf27fd, type: 3}
   AllyBase: {fileID: 1990598877}
   EnemyGoldObj: {fileID: 1684510089}
 --- !u!4 &565085547
@@ -590,7 +591,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 565085545}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.55, y: 0, z: -0.09109631}
+  m_LocalPosition: {x: -7.51, y: 0, z: -0.09109631}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -620,7 +621,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 10}
+  m_Size: {x: 15, y: 10}
   m_EdgeRadius: 0
 --- !u!1 &686428131
 GameObject:
