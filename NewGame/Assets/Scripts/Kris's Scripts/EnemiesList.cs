@@ -7,96 +7,80 @@ using UnityEngine;
 public class EnemiesList : MonoBehaviour
 {
     // ENEMIES NEED BOX COLLIDER WITH A TRIGGER ON
-    public Queue<GameObject> enemies;
+    public List<GameObject> enemies;
     //Need to Insert Prefabs from foulders
     public GameObject AllyAllrounder;
     public GameObject AllySpeed;
     public GameObject AllyHeavy;
     //For the base just reference it from the World
     public GameObject AllyBase;
-
     private Vector2 AllyBasePosition;
     private Vector2 TopSpawnOfBase;
     private Vector2 BottomSpawnOfBase;
 
+   
     public GameObject EnemyGoldObj;
-
     private EnemyGold AIGold;
-    private EnemyValues getHealth;
-
     private int gold;
-
-    private DecisionMake DecisionTree()
+    private DecisionMake DecisionTree(GameObject enemy)
     {
-        //DecisionMake EnemyNearBaseTopRounder = (DecisionMake)ScriptableObject.CreateInstance(typeof(DecisionMake));
-        //EnemyNearBaseTopRounder.EnemyTeamTag = enemies.Peek().tag == "AllRounder";
-        //EnemyNearBaseTopRounder.IsOnPTeam = IsPeekQueueEnemyFromThePlayer();
-        //DecisionResult EnemyNearBaseTopRounderResult = (DecisionResult)ScriptableObject.CreateInstance(typeof(DecisionResult));
-        //EnemyNearBaseTopRounderResult.Result = true;
-        //EnemyNearBaseTopRounderResult.allyToSpawn = AllyAllrounder;
-        //EnemyNearBaseTopRounderResult.offsetBasePosition = TopSpawnOfBase;
-        //EnemyNearBaseTopRounder.Defend defend = EnemyNearBaseTopRounderResult;
-        // EnemyNearBaseTopRounder.Defend = 
-
-        var EnemyNearBaseTopRounder = new DecisionMake()
+        var EnemyNearBaseTopRounder = new DecisionMake
         {
-            EnemyTeamTag = enemies.Peek().tag == "AllRounder",
-            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+
+            EnemyTeamTag = enemy.tag == "AllRounder",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(enemy),
+
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
             Defend = new DecisionResult { Result = true, allyToSpawn = AllyAllrounder, offsetBasePosition = TopSpawnOfBase }
         };
 
-        var EnemyNearBaseBotRounder = new DecisionMake()
+        var EnemyNearBaseBotRounder = new DecisionMake
         {
 
-            EnemyTeamTag = enemies.Peek().tag == "Speed",
-            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+            EnemyTeamTag = enemy.tag == "Speed",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(enemy),
 
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
             Defend = new DecisionResult { Result = true, allyToSpawn = AllySpeed, offsetBasePosition = TopSpawnOfBase }
         };
 
-        var EnemyNearBaseTopHeavy = new DecisionMake()
+        var EnemyNearBaseTopHeavy = new DecisionMake
         {
 
-            EnemyTeamTag = enemies.Peek().tag == "Giant",
-            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(),
+            EnemyTeamTag = enemy.tag == "Giant",
+            IsOnPTeam = IsPeekQueueEnemyFromThePlayer(enemy),
 
             Attack = new DecisionResult { Result = false, allyToSpawn = null, offsetBasePosition = new Vector2(0, 0) },
             Defend = new DecisionResult { Result = true, allyToSpawn = AllyHeavy, offsetBasePosition = TopSpawnOfBase }
         };
 
-       if(enemies.Peek().tag == "Speed")
+       if(enemy.tag == "Speed")
         {
             return EnemyNearBaseBotRounder;
         }
 
-        if (enemies.Peek().tag == "AllRounder" )
+        if (enemy.tag == "AllRounder" )
         {
             return EnemyNearBaseTopRounder;
 
         }
-        if (enemies.Peek().tag == "Giant")
+        if (enemy.tag == "Giant")
         {
             return EnemyNearBaseTopHeavy;
         }
         return null;
     }
 
-    //public EnemiesList()
-    //{
-    //    enemies = new Queue<GameObject>();
-    //}
 
-    bool IsPeekQueueEnemyFromThePlayer()
+    bool IsPeekQueueEnemyFromThePlayer(GameObject enemy)
     {
-        EnemyValues getBool = enemies.Peek().GetComponent<EnemyValues>();
+        EnemyValues getBool = enemy.GetComponent<EnemyValues>();
         return getBool.PTeam;
     }
 
     GameObject ReturnARandomObject()
     {
-        int randomNumber = Random.Range(1, 4);
+        int randomNumber = Random.Range(1, 3);
         if (randomNumber == 1)
         {
             return AllyAllrounder;
@@ -113,53 +97,75 @@ public class EnemiesList : MonoBehaviour
         {
             return null;
         }
+       
     }
   
     void Awake()
     {
         AIGold = EnemyGoldObj.GetComponent<EnemyGold>();
+       
     }
+
     void Start()
     {
         AllyBasePosition = AllyBase.transform.position;
-        TopSpawnOfBase = AllyBasePosition - new Vector2(0, -1.5f);
+        TopSpawnOfBase = AllyBasePosition - new Vector2(0, -0.5f);
         BottomSpawnOfBase = AllyBasePosition - new Vector2(0, 5);
-        enemies = new Queue<GameObject>();    
+        enemies = new List<GameObject>();
     }
-    void RemoveFromQueIfDead()
-    {
-        float getFirstInQueHealth = getHealth.health;
-        if (getFirstInQueHealth <=0 )
-        {
-            enemies.Dequeue();
-        }
-    }
+
     void Update()
     {
         gold = AIGold.enemyGold;
+        // Debug.Log(enemies.Count);
        
-        if (enemies.Count != 0 && enemies.Peek() != null)
+        for (int i = 0; i < enemies.Count; i++)
         {
-            getHealth = enemies.Peek().GetComponent<EnemyValues>();
-            RemoveFromQueIfDead();
-        }
-        if (enemies.Count != 0)
-        {
+            GameObject enemy = enemies[i];
+            if(enemy != null)
+            {
+                EnemyValues getHP = enemy.GetComponent<EnemyValues>();
+                if (enemy == null)
+                {
+                    break;
 
-            if ( gold > 4)
-            {
-                AIGold.CostPerUnit(DecisionTree(),  enemies);
+                }
+                else if (getHP.health <= 0)
+                {
+                    enemies.RemoveAt(i);
+                }
             }
+            
         }
-        else
+
+            if (enemies.Count > 0)
         {
-            if (gold > 4)
+            for (int i = 0; i<enemies.Count;i++)
             {
-                
-                AIGold.RandomUnit(ReturnARandomObject(),TopSpawnOfBase);
-            }
+                GameObject enemy = enemies[i];
+
+                if (enemies.Count == 0)
+                {
+                    break;
+
+                }
+                else if (gold > 4)
+                {
+                    AIGold.CostPerUnit(DecisionTree(enemy), IsPeekQueueEnemyFromThePlayer(enemy), enemy);
+                    if (enemy == null)
+                    {
+                        i++;
+                    }
+
+                }  
+            } 
+            
         }
-        Debug.Log(enemies.Count);
+       else if (gold > 4 && enemies.Count == 0)
+       {
+            AIGold.CostPerRandomUnit(ReturnARandomObject(), TopSpawnOfBase);
+       }
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -168,11 +174,11 @@ public class EnemiesList : MonoBehaviour
         enemy = other.gameObject.GetComponent<EnemyValues>();
         if (enemy.PTeam == true)
         {
-
-            
-           enemies.Enqueue(other.gameObject);//pointing to Enemies's queue "enemies".
-            
+           enemies.Add(other.gameObject);//pointing to Enemies's queue "enemies".
         }
 
+
+
     }
+
 }
