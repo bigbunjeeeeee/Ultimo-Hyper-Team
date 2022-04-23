@@ -4,14 +4,13 @@ using UnityEngine;
 
 public class Testing : MonoBehaviour
 {
-    private PathFinding pathfinding;
+    public PathFinding pathfinding;
     public float nodesize;
     GameObject ebase;
     GameObject[] walls;
     void Start()
     {
         pathfinding = new PathFinding(30, 10, transform.position, nodesize);
-
     }
 
     private void Update()
@@ -26,6 +25,8 @@ public class Testing : MonoBehaviour
             }
         }
         walls = GameObject.FindGameObjectsWithTag("Wall");
+
+
         foreach (GameObject wall in walls)
         {
             pathfinding.getGrid().GetXY(wall.transform.position, out int x, out int y);
