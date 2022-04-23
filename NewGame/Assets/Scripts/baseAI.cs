@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class baseAI : MonoBehaviour
 {
@@ -23,6 +24,13 @@ public class baseAI : MonoBehaviour
         if (timer <= 0f)
         {
             Draw();
+        }
+
+        if(health <= 0)
+        {
+
+         SceneManager.LoadScene("You_lose");
+
         }
     }
 

@@ -107,9 +107,9 @@ public class Unit_Behavior : MonoBehaviour
     //public void EnemyAttack()
     //{
     //    Collider2D HitCollider = Physics2D.OverlapBox(transform.position, size, 0f);
-    //    if(HitCollider.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
+    //    if (HitCollider.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
     //    {
-    //        
+
     //    }
     //}
 
