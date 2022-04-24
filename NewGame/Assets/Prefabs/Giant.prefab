@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2518578778204736490}
   - component: {fileID: 4613156726000885659}
   - component: {fileID: -1694066070652520654}
+  - component: {fileID: 1870428671317571839}
   m_Layer: 0
   m_Name: Giant
   m_TagString: Giant
@@ -106,7 +107,8 @@ MonoBehaviour:
   aoe: 0
   cost: 0
   attackspeed: 3
-  PTeam: 0
+  PTeam: 1
+  IsDead: 0
 --- !u!114 &2518578778204736490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493d006db526a224698001259e55ad70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poslock: 0
   starttime: 3
   testpos: {x: 0, y: 0, z: 0}
   size: {x: 0, y: 0}
@@ -169,3 +172,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &1870428671317571839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9148919136037015589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a39f2093038764dae3bb49f727d2ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1425469510634936203, guid: 5bfe16e3d8a11b74a8991a68715aa902, type: 3}
+  amount: 7
+  radius: 0.3
+  scale: 0.5
+  speed: 4
+  targetThis: 1
+  avoiding: 0
+  xMin: -2
+  xMax: 2
+  yMin: -2
+  yMax: 2
+  boids: []

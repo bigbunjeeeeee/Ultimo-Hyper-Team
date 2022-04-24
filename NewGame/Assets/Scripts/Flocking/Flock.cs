@@ -56,5 +56,14 @@ public class Flock : MonoBehaviour
 
         }
     }
+    private void OnDestroy()
+    {
+        foreach (Boids b in boids)
+        {
+            print("qweqwe");
+            Destroy(b.gameObject);
+        }
+    }
+
 
 }
