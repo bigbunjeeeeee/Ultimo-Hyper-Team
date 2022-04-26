@@ -8,7 +8,7 @@ public class baseAI : MonoBehaviour
     public float health;
     public float attack;
     public float attackSpd;
-    public float timer;
+    float timer;
     public float range;
     // Start is called before the first frame update
     void Start()
@@ -39,10 +39,21 @@ public class baseAI : MonoBehaviour
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
         foreach (var hitCollider in hitColliders)
         {
-            if (hitCollider.tag != this.tag)
+            if (this.gameObject.CompareTag("EnemyBase"))
             {
-                timerEnded(hitCollider);
+                if (hitCollider.GetComponent<EnemyValues>().PTeam == true)
+                {
+                    timerEnded(hitCollider);
 
+            }
+        }
+            if (this.gameObject.CompareTag("Base"))
+            {
+                if (hitCollider.GetComponent<EnemyValues>().PTeam == false)
+                {
+                    timerEnded(hitCollider);
+
+                }
             }
         }
     }
@@ -51,6 +62,7 @@ public class baseAI : MonoBehaviour
     {
         EnemyValues enemy = target.GetComponent<EnemyValues>();
         enemy.health -= attack;
+        timer = attackSpd;
         
     }
 }

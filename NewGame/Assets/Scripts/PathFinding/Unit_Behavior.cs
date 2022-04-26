@@ -144,6 +144,40 @@ public class Unit_Behavior : MonoBehaviour
                 }
             }
         }
+        else if(this.gameObject.GetComponent<EnemyValues>().PTeam == true && collision.CompareTag("EnemyBase"))
+        {
+            StopMoving();
+
+            poslock = false;
+            bool Engage = true;
+            while(Engage == true)
+            {
+                time -= Time.deltaTime;
+                if (time <= 0)
+                {
+                    collision.gameObject.GetComponent<baseAI>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
+                    Debug.Log("Damage");
+                    time = starttime;
+                }
+            }
+        }
+        else if(this.gameObject.GetComponent<EnemyValues>().PTeam == false && collision.CompareTag("Base"))
+        {
+            StopMoving();
+
+            poslock = false;
+            bool Engage = true;
+            while (Engage == true)
+            {
+                time -= Time.deltaTime;
+                if (time <= 0)
+                {
+                    collision.gameObject.GetComponent<baseAI>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
+                    Debug.Log("Damage");
+                    time = starttime;
+                }
+            }
+        }
 
 
 
