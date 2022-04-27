@@ -113,15 +113,43 @@ public class Unit_Behavior : MonoBehaviour
     //    }
     //}
 
+    void OnTriggerStay2D(Collider2D collision)
+    {
+
+        //Debug.Log(collision);
+
+
+
+        if (gameObject.GetComponent<EnemyValues>().PTeam != collision.GetComponent<baseAI>().Player)
+        {
+            StopMoving();
+
+            poslock = false;
+            bool Engage = true;
+            while (Engage == true)
+            {
+                time -= Time.deltaTime;
+                if (time <= 0)
+                {
+                    collision.gameObject.GetComponent<baseAI>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
+                    time = starttime;
+                }
+                if (collision.gameObject.GetComponent<baseAI>().health <= 0)
+                {
+                    Engage = false;
+                    poslock = false;
+                }
+            }
+        }
+       
+    }
+
     void OnTriggerEnter2D(Collider2D collision)
     {
-        
-        Debug.Log("Called");
         if (collision.gameObject.tag != "BottomBridgeCollision" && collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
         {
             StopMoving();
-            Debug.Log("hit");
-            
+
             poslock = false;
             bool Engage = true;
             while (Engage == true)
@@ -130,13 +158,8 @@ public class Unit_Behavior : MonoBehaviour
                 if (time <= 0)
                 {
                     collision.gameObject.GetComponent<EnemyValues>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
-                    Debug.Log("Damage");
                     time = starttime;
                 }
-                //if(collision.gameObject == null)
-                //{
-                //    Engage = false;
-                //}
                 if (collision.gameObject.GetComponent<EnemyValues>().health <= 0)
                 {
                     Engage = false;
@@ -144,46 +167,6 @@ public class Unit_Behavior : MonoBehaviour
                 }
             }
         }
-        else if(this.gameObject.GetComponent<EnemyValues>().PTeam == true && collision.CompareTag("EnemyBase"))
-        {
-            StopMoving();
-
-            poslock = false;
-            bool Engage = true;
-            while(Engage == true)
-            {
-                time -= Time.deltaTime;
-                if (time <= 0)
-                {
-                    collision.gameObject.GetComponent<baseAI>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
-                    Debug.Log("Damage");
-                    time = starttime;
-                }
-            }
-        }
-        else if(this.gameObject.GetComponent<EnemyValues>().PTeam == false && collision.CompareTag("Base"))
-        {
-            StopMoving();
-
-            poslock = false;
-            bool Engage = true;
-            while (Engage == true)
-            {
-                time -= Time.deltaTime;
-                if (time <= 0)
-                {
-                    collision.gameObject.GetComponent<baseAI>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
-                    Debug.Log("Damage");
-                    time = starttime;
-                }
-            }
-        }
-
-
-
-
-
-
     }
 }
 

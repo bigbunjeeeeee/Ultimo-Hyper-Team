@@ -10,6 +10,8 @@ public class baseAI : MonoBehaviour
     public float attackSpd;
     float timer;
     public float range;
+
+    public bool Player;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,21 +19,34 @@ public class baseAI : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    void Update()
     {
         timer -= Time.deltaTime;
+
+       
+
+        Debug.Log(health);
+
+        if(health <= 0)
+        {
+            Debug.Log("Dead");
+            if (Player == true)
+            {
+                Debug.Log("Change Scene");
+                SceneManager.LoadScene("You_Lose");
+            }
+            else
+            {
+                SceneManager.LoadScene("You_Win");
+            }
+
+        }
 
         if (timer <= 0f)
         {
             Draw();
         }
 
-        if(health <= 0)
-        {
-
-         SceneManager.LoadScene("You_lose");
-
-        }
     }
 
     private void Draw()
@@ -41,18 +56,24 @@ public class baseAI : MonoBehaviour
         {
             if (this.gameObject.CompareTag("EnemyBase"))
             {
-                if (hitCollider.GetComponent<EnemyValues>().PTeam == true)
+                if (hitCollider != null)
                 {
-                    timerEnded(hitCollider);
-
-            }
+                    if (hitCollider.GetComponent<EnemyValues>().PTeam == true)
+                    {
+                        timerEnded(hitCollider);
+                    }
+                }
+            
         }
             if (this.gameObject.CompareTag("Base"))
             {
-                if (hitCollider.GetComponent<EnemyValues>().PTeam == false)
+                if (hitCollider != null)
                 {
-                    timerEnded(hitCollider);
+                    if (hitCollider.GetComponent<EnemyValues>().PTeam == false)
+                    {
+                        timerEnded(hitCollider);
 
+                    }
                 }
             }
         }

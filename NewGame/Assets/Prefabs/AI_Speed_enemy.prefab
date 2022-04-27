@@ -107,6 +107,7 @@ MonoBehaviour:
   cost: 0
   attackspeed: 0.5
   PTeam: 0
+  IsDead: 0
 --- !u!114 &455102887878713073
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -119,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 493d006db526a224698001259e55ad70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poslock: 0
   starttime: 0.5
   testpos: {x: 0, y: 0, z: 0}
   size: {x: 0, y: 0}
