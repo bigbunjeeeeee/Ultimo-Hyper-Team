@@ -8,4 +8,6 @@ public class poweups
     public static bool bomb = false;
     public static bool Pup = false;
 
+    public static bool FinalLevel = false;
+
 }

@@ -5,13 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class Menu_Stuff : MonoBehaviour
 {
+    bool purchased;
 
     // Start is called before the first frame update
 
     // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        purchased = false;
     }
 
     public void startGame()
@@ -26,15 +27,27 @@ public class Menu_Stuff : MonoBehaviour
 
     public void PurchaseWall()
     {
-        poweups.wall = true;
+        if (purchased == false)
+        {
+            poweups.wall = true;
+            purchased = true;
+        }
     }
     public void PurchaseBomb()
     {
-        poweups.bomb = true;
+        if (purchased == false)
+        {
+            poweups.bomb = true;
+            purchased = true;
+        }
     }
 
     public void PurchasePup()
     {
-        poweups.Pup = true;
+        if (purchased == false)
+        {
+            poweups.Pup = true;
+            purchased = true;
+        }
     }
 }

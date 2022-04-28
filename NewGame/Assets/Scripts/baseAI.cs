@@ -37,7 +37,16 @@ public class baseAI : MonoBehaviour
             }
             else
             {
-                SceneManager.LoadScene("You_Win");
+                if (poweups.FinalLevel == true)
+                {
+                    SceneManager.LoadScene("You_Win");
+                    poweups.FinalLevel = false;
+                }
+                else
+                {
+                    SceneManager.LoadScene("Sauls_Shop");
+                    poweups.FinalLevel = true;
+                }
             }
 
         }
