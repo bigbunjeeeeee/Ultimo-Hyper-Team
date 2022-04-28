@@ -16,8 +16,6 @@ public class EnemiesList : MonoBehaviour
     public GameObject AllyBase;
     private Vector2 AllyBasePosition;
     private Vector2 TopSpawnOfBase;
-    private Vector2 BottomSpawnOfBase;
-
    
     public GameObject EnemyGoldObj;
     private EnemyGold AIGold;
@@ -110,7 +108,6 @@ public class EnemiesList : MonoBehaviour
     {
         AllyBasePosition = AllyBase.transform.position;
         TopSpawnOfBase = AllyBasePosition - new Vector2(0, -0.5f);
-        BottomSpawnOfBase = AllyBasePosition - new Vector2(0, 5);
         enemies = new List<GameObject>();
     }
 
@@ -170,15 +167,10 @@ public class EnemiesList : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        EnemyValues enemy  ;
-        enemy = other.gameObject.GetComponent<EnemyValues>();
+        EnemyValues enemy = other.gameObject.GetComponent<EnemyValues>() ;
         if (enemy.PTeam == true)
         {
            enemies.Add(other.gameObject);//pointing to Enemies's queue "enemies".
         }
-
-
-
     }
-
 }

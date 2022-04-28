@@ -10,7 +10,7 @@ public class Gold : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        
         goldText.text = "Gold: " + gold;
     }
 
@@ -30,5 +30,15 @@ public class Gold : MonoBehaviour
 
        
        
+    }
+
+    public void TakeGoldFromThePlayer(GameObject SpawnBluePrint)
+    {
+        if(gold >= 4 )
+        {
+            Instantiate(SpawnBluePrint);
+            gold = gold - 4;
+            
+        }
     }
 }
