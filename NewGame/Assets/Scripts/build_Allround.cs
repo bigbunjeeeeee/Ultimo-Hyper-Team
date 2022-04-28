@@ -9,15 +9,15 @@ public class build_Allround : MonoBehaviour
     public GameObject PlayerGoldObj;
     void Start()
     {
-        //PlayerGoldObj = GameObject.Find("PlayerGold");
+        PlayerGoldObj = GameObject.Find("PlayerGold");
 
-     //   playerGold = PlayerGoldObj.GetComponent<Gold>();
+        playerGold = PlayerGoldObj.GetComponent<Gold>();
 
     }
 
     public void spawn_blueprint()
     {
-       //playerGold.TakeGoldFromThePlayer(Controller_blueprint);
+       playerGold.TakeGoldFromThePlayer(Controller_blueprint);
     
     }
 }

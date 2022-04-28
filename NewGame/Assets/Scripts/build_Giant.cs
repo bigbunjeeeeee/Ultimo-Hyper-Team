@@ -5,9 +5,17 @@ using UnityEngine;
 public class build_Fast : MonoBehaviour
 {
     public GameObject Controller_blueprint;
+    private Gold playerGold;
+    public GameObject PlayerGoldObj;
+    void Start()
+    {
+        PlayerGoldObj = GameObject.Find("PlayerGold");
 
+        playerGold = PlayerGoldObj.GetComponent<Gold>();
+
+    }
     public void spawn_blueprint()
     {
-        Instantiate(Controller_blueprint);
+        playerGold.TakeGoldFromThePlayer(Controller_blueprint);
     }
 }
