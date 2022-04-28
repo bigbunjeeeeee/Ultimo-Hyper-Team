@@ -957,7 +957,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 15, y: 10}
+  m_Size: {x: 10, y: 10}
   m_EdgeRadius: 0
 --- !u!1 &686428131
 GameObject:
@@ -1971,6 +1971,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller_blueprint: {fileID: 5469872240640825071, guid: 1b91407bf08a6394d9fe14da13d75dd5, type: 3}
+  PlayerGoldObj: {fileID: 0}
 --- !u!114 &1755822237
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1984,6 +1985,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller_blueprint: {fileID: 3076694172071675353, guid: fa8f91aa9ed9585478d29e2d2a77f460, type: 3}
+  PlayerGoldObj: {fileID: 0}
 --- !u!114 &1755822238
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1997,6 +1999,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Controller_blueprint: {fileID: 5344281469518854240, guid: 09d2619ddecfff84199c81873a6b4dc8, type: 3}
+  PlayerGoldObj: {fileID: 0}
 --- !u!114 &1755822239
 MonoBehaviour:
   m_ObjectHideFlags: 0

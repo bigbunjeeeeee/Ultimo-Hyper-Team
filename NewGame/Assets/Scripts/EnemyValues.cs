@@ -20,6 +20,10 @@ public class EnemyValues : MonoBehaviour
     //{
     //    timer = attackspeed;
     //}
+    public bool GetIsOnTeam
+    {
+        get { return PTeam; }
+    }
     public void Update()
     {
         if (health <= 0)

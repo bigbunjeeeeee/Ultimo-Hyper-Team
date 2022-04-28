@@ -164,13 +164,35 @@ public class EnemiesList : MonoBehaviour
        }
 
     }
-
+    bool IsItAnObject(Collider2D other)
+    {
+        if (other.gameObject.tag == "AllRounder")
+        {
+            return true;
+        }else if(other.gameObject.tag == "Speed")
+        {
+            return true;
+        }else if (other.gameObject.tag == "Giant")
+        {
+            return true;
+        }
+        else 
+        { 
+            return false; 
+        }
+    }
     void OnTriggerEnter2D(Collider2D other)
     {
-        EnemyValues enemy = other.gameObject.GetComponent<EnemyValues>() ;
-        if (enemy.PTeam == true)
+        
+        if(IsItAnObject(other))//|| other.gameObject.tag = "Giant"
         {
-           enemies.Add(other.gameObject);//pointing to Enemies's queue "enemies".
+            EnemyValues enemy = other.gameObject.GetComponent<EnemyValues>();
+            if (enemy.GetIsOnTeam == true)
+            {
+                enemies.Add(other.gameObject);//pointing to Enemies's queue "enemies".
+            }
         }
+       
+        
     }
 }

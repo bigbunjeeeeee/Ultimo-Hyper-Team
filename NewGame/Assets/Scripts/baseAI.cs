@@ -57,7 +57,25 @@ public class baseAI : MonoBehaviour
         }
 
     }
-
+    bool IsItAnObject(Collider2D other)
+    {
+        if (other.gameObject.tag == "AllRounder")
+        {
+            return true;
+        }
+        else if (other.gameObject.tag == "Speed")
+        {
+            return true;
+        }
+        else if (other.gameObject.tag == "Giant")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     private void Draw()
     {
         Collider2D[] hitColliders = Physics2D.OverlapCircleAll(transform.position, range);
@@ -67,10 +85,14 @@ public class baseAI : MonoBehaviour
             {
                 if (hitCollider != null)
                 {
-                    if (hitCollider.GetComponent<EnemyValues>().PTeam == true)
+                    if (IsItAnObject(hitCollider))
                     {
-                        timerEnded(hitCollider);
+                        if (hitCollider.GetComponent<EnemyValues>().PTeam == true)
+                        {
+                            timerEnded(hitCollider);
+                        }
                     }
+                   
                 }
             
         }
@@ -78,10 +100,13 @@ public class baseAI : MonoBehaviour
             {
                 if (hitCollider != null)
                 {
-                    if (hitCollider.GetComponent<EnemyValues>().PTeam == false)
+                    if (IsItAnObject(hitCollider))
                     {
-                        timerEnded(hitCollider);
+                        if (hitCollider.GetComponent<EnemyValues>().PTeam == false)
+                        {
+                            timerEnded(hitCollider);
 
+                        }
                     }
                 }
             }

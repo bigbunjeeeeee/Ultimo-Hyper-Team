@@ -112,58 +112,82 @@ public class Unit_Behavior : MonoBehaviour
 
     //    }
     //}
-
+    bool IsItAnObject(Collider2D other)
+    {
+        if (other.gameObject.tag == "AllRounder")
+        {
+            return true;
+        }
+        else if (other.gameObject.tag == "Speed")
+        {
+            return true;
+        }
+        else if (other.gameObject.tag == "Giant")
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
     void OnTriggerStay2D(Collider2D collision)
     {
 
         //Debug.Log(collision);
 
-
-
-        if (gameObject.GetComponent<EnemyValues>().PTeam != collision.GetComponent<baseAI>().Player)
+        if(IsItAnObject(collision))
         {
-            StopMoving();
-
-            poslock = false;
-            bool Engage = true;
-            while (Engage == true)
+            if (gameObject.GetComponent<EnemyValues>().PTeam != collision.GetComponent<baseAI>().Player)
             {
-                time -= Time.deltaTime;
-                if (time <= 0)
+                StopMoving();
+
+                poslock = false;
+                bool Engage = true;
+                while (Engage == true)
                 {
-                    collision.gameObject.GetComponent<baseAI>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
-                    time = starttime;
-                }
-                if (collision.gameObject.GetComponent<baseAI>().health <= 0)
-                {
-                    Engage = false;
-                    poslock = false;
+                    time -= Time.deltaTime;
+                    if (time <= 0)
+                    {
+                        collision.gameObject.GetComponent<baseAI>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
+                        time = starttime;
+                    }
+                    if (collision.gameObject.GetComponent<baseAI>().health <= 0)
+                    {
+                        Engage = false;
+                        poslock = false;
+                    }
                 }
             }
         }
+
+       
        
     }
 
     void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.tag != "BottomBridgeCollision" && collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
+        if (IsItAnObject(collision))
         {
-            StopMoving();
-
-            poslock = false;
-            bool Engage = true;
-            while (Engage == true)
+            if (collision.gameObject.tag != "BottomBridgeCollision" && collision.GetComponent<EnemyValues>().PTeam != this.GetComponent<EnemyValues>().PTeam)
             {
-                time -= Time.deltaTime;
-                if (time <= 0)
+                StopMoving();
+
+                poslock = false;
+                bool Engage = true;
+                while (Engage == true)
                 {
-                    collision.gameObject.GetComponent<EnemyValues>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
-                    time = starttime;
-                }
-                if (collision.gameObject.GetComponent<EnemyValues>().health <= 0)
-                {
-                    Engage = false;
-                    poslock = false;
+                    time -= Time.deltaTime;
+                    if (time <= 0)
+                    {
+                        collision.gameObject.GetComponent<EnemyValues>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
+                        time = starttime;
+                    }
+                    if (collision.gameObject.GetComponent<EnemyValues>().health <= 0)
+                    {
+                        Engage = false;
+                        poslock = false;
+                    }
                 }
             }
         }
