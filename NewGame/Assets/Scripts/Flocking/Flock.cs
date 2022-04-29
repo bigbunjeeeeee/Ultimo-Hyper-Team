@@ -60,7 +60,7 @@ public class Flock : MonoBehaviour
     {
         foreach (Boids b in boids)
         {
-            print("qweqwe");
+
             Destroy(b.gameObject);
         }
     }

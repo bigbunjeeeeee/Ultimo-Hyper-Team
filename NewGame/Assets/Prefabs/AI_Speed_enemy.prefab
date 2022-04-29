@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 455102887878713073}
   - component: {fileID: 8111205543444368618}
   - component: {fileID: 5624642079377148287}
+  - component: {fileID: -6977243975810907346}
   m_Layer: 0
   m_Name: AI_Speed_enemy
   m_TagString: Speed
@@ -171,3 +172,27 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-6977243975810907346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2961062235280168426}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08a39f2093038764dae3bb49f727d2ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 3146309304201003335, guid: cc41ea2bdaa32ad4d9943553d564fc6d, type: 3}
+  amount: 7
+  radius: 0.3
+  scale: 0.3
+  speed: 12
+  targetThis: 1
+  avoiding: 0
+  xMin: -2
+  xMax: 2
+  yMin: -2
+  yMax: 2
+  boids: []
