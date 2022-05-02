@@ -15,6 +15,8 @@ public class Unit_Behavior : MonoBehaviour
     float time;
     public Vector3 testpos;
     public Vector2 size;
+    GameObject Target;
+    bool Engage;
 
     // Start is called before the first frame update
     void Start()
@@ -44,14 +46,17 @@ public class Unit_Behavior : MonoBehaviour
             {
                 SetTargetPosition(EBase.transform.position);
             }
-            else if(stats.PTeam == false)
+            else if (stats.PTeam == false)
             {
                 SetTargetPosition(PBase.transform.position);
             }
             poslock = true;
         }
 
-        HandleMovement();
+        if (Engage == false)
+        {
+            HandleMovement();
+        }
 
     }
 
@@ -131,38 +136,22 @@ public class Unit_Behavior : MonoBehaviour
             return false;
         }
     }
+
     void OnTriggerStay2D(Collider2D collision)
     {
 
         //Debug.Log(collision);
 
-        if(IsItAnObject(collision))
+        //if(IsItAnObject(collision))
+        //{
+        if (gameObject.GetComponent<EnemyValues>().PTeam != collision.GetComponent<baseAI>().Player)
         {
-            if (gameObject.GetComponent<EnemyValues>().PTeam != collision.GetComponent<baseAI>().Player)
-            {
-                StopMoving();
-
-                poslock = false;
-                bool Engage = true;
-                while (Engage == true)
-                {
-                    time -= Time.deltaTime;
-                    if (time <= 0)
-                    {
-                        collision.gameObject.GetComponent<baseAI>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
-                        time = starttime;
-                    }
-                    if (collision.gameObject.GetComponent<baseAI>().health <= 0)
-                    {
-                        Engage = false;
-                        poslock = false;
-                    }
-                }
-            }
+            Destroy(gameObject);
+            collision.gameObject.GetComponent<baseAI>().health -= 25;
         }
 
-       
-       
+
+
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -174,25 +163,29 @@ public class Unit_Behavior : MonoBehaviour
                 StopMoving();
 
                 poslock = false;
-                bool Engage = true;
-                while (Engage == true)
-                {
-                    time -= Time.deltaTime;
-                    if (time <= 0)
-                    {
-                        collision.gameObject.GetComponent<EnemyValues>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
-                        time = starttime;
-                    }
-                    if (collision.gameObject.GetComponent<EnemyValues>().health <= 0)
-                    {
-                        Engage = false;
-                        poslock = false;
-                    }
-                }
+                Engage = true;
+                Target = collision.gameObject;
+
+                InvokeRepeating("Damage", 0f, gameObject.GetComponent<EnemyValues>().attackspeed);
+                
             }
         }
     }
+
+    void Damage()
+    {
+       Target.GetComponent<EnemyValues>().health -= this.gameObject.GetComponent<EnemyValues>().damage;
+
+        if (Target.GetComponent<EnemyValues>().health <= 0 || Target == null)
+        {
+            Engage = false;
+            poslock = false;
+        }
+
+    }
+
 }
+
 
 
 

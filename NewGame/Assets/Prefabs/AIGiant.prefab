@@ -103,7 +103,7 @@ MonoBehaviour:
   speed: 5
   health: 30
   maxHealth: 30
-  damage: 10
+  damage: 2
   aoe: 0
   cost: 0
   attackspeed: 3
