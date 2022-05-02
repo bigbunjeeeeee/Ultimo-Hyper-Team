@@ -16,6 +16,8 @@ public class EnemyGold : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //Get one gold for each second that passes
         eachSecondGiveOneGold += Time.deltaTime;
         if (eachSecondGiveOneGold > 1.0f)
         {
@@ -26,11 +28,14 @@ public class EnemyGold : MonoBehaviour
         }
     }
 
+    //When we spawn we remove 4 gold from the AI's gold
     public void CostPerUnit(DecisionMake Decide, bool Bollean,GameObject enemy )
     {
         enemyGold = enemyGold - 4;
         Decide.Decide(enemy);
     }
+
+    //Random spawn and remove 4 gold
     public void CostPerRandomUnit(GameObject RandomAlly,Vector2 randomSpawn)
     {
         enemyGold = enemyGold -4 ;

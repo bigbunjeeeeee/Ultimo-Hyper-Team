@@ -32,6 +32,7 @@ public class Gold : MonoBehaviour
        
     }
 
+    //When the Player spawns a unity remove 4 gold same for the AI
     public void TakeGoldFromThePlayer(GameObject SpawnBluePrint)
     {
         if(gold >= 4 )
